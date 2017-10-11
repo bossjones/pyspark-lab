@@ -1,0 +1,83 @@
+{
+    "volumes": null,
+    "id": "/bossjones-pyspark-lab",
+    "cmd": null,
+    "args": null,
+    "user": null,
+    "env": {
+      "SPARK_DRIVER_CORES": "1",
+      "SPARK_EXECUTOR_MEMORY": "1g",
+      "CFG_DB_STATS_USER": "root",
+      "CFG_DB_STATS_PASSWORD": "password",
+      "CFG_DB_NETWORK_PASSWORD": "password",
+      "MESOS_EXECUTOR_DOCKER_IMAGE": "172.16.223.128:5000/bossjones/pi-spark-lab:d89427f131516fc9edc028cf0ffbe012dc28c8ae",
+      "APPLICATION_WEB_PROXY_BASE": "/service/bossjones-pyspark-lab",
+      "SPARK_DRIVER_MEMORY": "1g",
+      "APP_NAME": "bossjones-pyspark-lab",
+      "SPARK_DYNAMIC_ALLOCATION_MAX_EXECUTORS": "3",
+      "SPARK_SUBMIT_SCRIPT_PATH": "/app/scripts/spark-submit-model.sh",
+      "CFG_DB_STATS_HOST": "127.0.0.1",
+      "SPARK_CORES_MAX": "4",
+      "CFG_DATASET_MONTH_INTERVAL": "20",
+      "SPARK_EXECUTOR_CORES": "1",
+      "MASTER_URI": "mesos://zk://127.0.0.1:2181/mesos",
+      "MESOS_MASTER_URI": "mesos://zk://127.0.0.1:2181/mesos",
+      "SPARK_PUBLIC_DNS": "172.16.223.128",
+      "CFG_DB_NETWORK_HOST": "127.0.0.1",
+      "LIBPROCESS_IP": "172.16.223.128",
+      "CLUSTER_ENGINE": "DCOS"
+    },
+    "instances": 1,
+    "cpus": 2,
+    "mem": 2048,
+    "disk": 0,
+    "gpus": 0,
+    "executor": null,
+    "constraints": [
+    ],
+    "storeUrls": null,
+    "backoffSeconds": 1,
+    "backoffFactor": 1.15,
+    "maxLaunchDelaySeconds": 3600,
+    "container": {
+      "docker": {
+        "image": "172.16.223.128:5000/bossjones/pi-spark-lab:d89427f131516fc9edc028cf0ffbe012dc28c8ae",
+        "forcePullImage": true,
+        "privileged": false,
+        "parameters": [
+          {
+            "key": "log-driver",
+            "value": "json-file"
+          }
+        ],
+        "network": "HOST"
+      }
+    },
+    "healthChecks": null,
+    "readinessChecks": null,
+    "dependencies": null,
+    "upgradeStrategy": {
+      "minimumHealthCapacity": 1,
+      "maximumOverCapacity": 1
+    },
+    "labels": {
+      "DCOS_SERVICE_SCHEME": "http",
+      "DCOS_SERVICE_NAME": "bossjones-pyspark-lab",
+      "DCOS_SERVICE_PORT_INDEX": "1"
+    },
+    "acceptedResourceRoles": null,
+    "residency": null,
+    "secrets": null,
+    "taskKillGracePeriodSeconds": null,
+    "portDefinitions": [
+      {
+        "protocol": "tcp",
+        "port": 10026
+      },
+      {
+        "protocol": "tcp",
+        "port": 10027
+      }
+    ],
+    "requirePorts": true
+  }
