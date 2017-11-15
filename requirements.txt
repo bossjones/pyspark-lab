@@ -1,0 +1,17 @@
+# debugging and tooling
+pep8
+autopep8
+pylint
+ipython
+isort
+wheel
+setuptools
+
+# remote debugging in visual studio code
+# source: https://docs.microsoft.com/en-us/visualstudio/python/debugging-cross-platform-remote
+ptvsd
+prettytable
+
+jinja2-cli[yaml]==0.6.0
+jinja2==2.9.5
+pyfiglet
