@@ -97,6 +97,7 @@
     "**/.ropeproject": "explorerExcludedFiles",
     "**/.cache": "explorerExcludedFiles",
     "*.pyc": "explorerExcludedFiles",
-    "venv": "explorerExcludedFiles"
+    "venv": "explorerExcludedFiles",
+    "compute_pi/.vscode/tags": "explorerExcludedFiles"
   }
 }

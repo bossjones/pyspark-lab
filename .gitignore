@@ -210,3 +210,4 @@ data
 **/.cache
 *.pyc
 /venv
+compute_pi/.vscode/tags
