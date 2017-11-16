@@ -10,10 +10,13 @@ EXPOSE 8080 8082
 # source: https://github.com/docker-library/postgres/blob/69bc540ecfffecce72d49fa7e4a46680350037f9/9.6/Dockerfile#L21-L24
 RUN apt-get update && \
     apt-get install -y locales && \
-    apt-get install -y --no-install-recommends \
+    apt-get install -yqq --no-install-recommends \
     bzip2 \
     unzip \
     xz-utils \
+    wget bzip2 ca-certificates \
+    libglib2.0-0 libxext6 libsm6 libxrender1 \
+    git mercurial subversion \
       && \
     rm -rf /var/lib/apt/lists/* \
   && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
@@ -57,10 +60,6 @@ RUN set -x mkdir -p /usr/share/man/man1 && \
   openjdk-8-jre \
   unzip \
   curl \
-  && \
-  apt-get install -yqq wget bzip2 ca-certificates \
-  libglib2.0-0 libxext6 libsm6 libxrender1 \
-  git mercurial subversion \
   && \
   # miniconda3
   echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
