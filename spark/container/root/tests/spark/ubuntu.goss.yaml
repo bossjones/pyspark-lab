@@ -1,0 +1,19 @@
+gossfile:
+  base.goss.yaml: {}
+command:
+  echo $JAVA_HOME:
+    exit-status: 0
+    stdout: ["/usr/lib/jvm/java-8-openjdk-amd64"]
+    stderr: []
+command:
+  /usr/sbin/mesos-master --version:
+    exit-status: 0
+    stdout: ["mesos"]
+    stderr: []
+    timeout: 5000
+command:
+  "/usr/local/spark/bin/spark-submit --version":
+    exit-status: 0
+    stdout: []
+    stderr: ["version 2.2."]
+    timeout: 30000

@@ -1,0 +1,11 @@
+gossfile:
+  ../../goss.base.yaml: {}
+user:
+  pi:
+    exists: true
+    uid: 1001
+command:
+  java -version 2>&1 | awk '/version/ {print $3}' | egrep -o '[^\"]*':
+    exit-status: 0
+    stdout: ["/1.8/"]
+    stderr: []

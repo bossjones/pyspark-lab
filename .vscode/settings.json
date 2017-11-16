@@ -98,6 +98,11 @@
     "**/.cache": "explorerExcludedFiles",
     "*.pyc": "explorerExcludedFiles",
     "venv": "explorerExcludedFiles",
-    "compute_pi/.vscode/tags": "explorerExcludedFiles"
+    "compute_pi/.vscode/tags": "explorerExcludedFiles",
+    ".vimrc": "explorerExcludedFiles",
+    "*.swp": "explorerExcludedFiles",
+    ".DS_Store?": "explorerExcludedFiles",
+    ".sass-cache": "explorerExcludedFiles",
+    "*.css.map": "explorerExcludedFiles"
   }
 }
