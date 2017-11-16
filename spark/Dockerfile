@@ -57,7 +57,8 @@ RUN set -x mkdir -p /usr/share/man/man1 && \
   openjdk-8-jre \
   unzip \
   curl \
-  wget bzip2 ca-certificates \
+  && \
+  apt-get install -yqq wget bzip2 ca-certificates \
   libglib2.0-0 libxext6 libsm6 libxrender1 \
   git mercurial subversion \
   && \
