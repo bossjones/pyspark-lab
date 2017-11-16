@@ -25,7 +25,7 @@ ENV NOT_ROOT_USER=pi \
 WORKDIR /
 
 # Upgrade base security packages, then clean packaging leftover
-RUN mkdir -p /usr/share/man/man1 && \
+RUN set -x mkdir -p /usr/share/man/man1 && \
   /bin/bash -e /security_updates.sh && \
   apt-get upgrade -yqq && \
   apt-get install -yqq \
