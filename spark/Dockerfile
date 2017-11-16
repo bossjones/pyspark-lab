@@ -8,7 +8,8 @@ EXPOSE 8080 8082
 
 # make the "en_US.UTF-8" locale so everything will be utf-8 enabled by default
 # source: https://github.com/docker-library/postgres/blob/69bc540ecfffecce72d49fa7e4a46680350037f9/9.6/Dockerfile#L21-L24
-RUN apt-get update && \
+RUN mkdir -p /usr/share/man/man1 && \
+    apt-get update && \
     apt-get install -y locales && \
     # ************************************************************************************************************
     # Installing the 'apt-utils' package gets rid of the 'debconf: delaying package configuration, since apt-utils is not installed'
@@ -65,7 +66,7 @@ WORKDIR /
 
 
 # Upgrade base security packages, then clean packaging leftover
-RUN set -x mkdir -p /usr/share/man/man1 && \
+RUN set -x; \
   env \
   /bin/bash -e /security_updates.sh && \
   apt-get update -yqq && \
