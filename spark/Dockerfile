@@ -8,8 +8,20 @@ EXPOSE 8080 8082
 
 # make the "en_US.UTF-8" locale so everything will be utf-8 enabled by default
 # source: https://github.com/docker-library/postgres/blob/69bc540ecfffecce72d49fa7e4a46680350037f9/9.6/Dockerfile#L21-L24
-RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+RUN apt-get update && \
+    apt-get install -y locales && \
+    apt-get install -y --no-install-recommends \
+    bzip2 \
+    unzip \
+    xz-utils \
+      && \
+    rm -rf /var/lib/apt/lists/* \
   && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+
+# source: https://github.com/docker-library/openjdk/blob/a893fe3cd82757e7bccc0948c88bfee09bd916c3/8-jre/Dockerfile
+# Default to UTF-8 file.encoding
+# ENV LANG C.UTF-8
+
 ENV LANG en_US.utf8
 
 # 2.1.0-2.2.0-1-hadoop-2.6
@@ -39,6 +51,7 @@ WORKDIR /
 RUN set -x mkdir -p /usr/share/man/man1 && \
   env \
   /bin/bash -e /security_updates.sh && \
+  apt-get update -yqq && \
   apt-get upgrade -yqq && \
   apt-get install -yqq \
   openjdk-8-jre \
