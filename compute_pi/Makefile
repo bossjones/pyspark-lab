@@ -1,4 +1,4 @@
-SHELL := $(shell which bash)
+SHELL = $(shell which bash)
 
 # export DOCKER_IP = $(shell which docker-machine > /dev/null 2>&1 && docker-machine ip $(DOCKER_MACHINE_NAME))
 
