@@ -6,8 +6,16 @@ EXPOSE 8080 8082
 
 #ENV MESOS_VERSION=1.0.1-2.0.94.ubuntu1604
 
+# make the "en_US.UTF-8" locale so everything will be utf-8 enabled by default
+# source: https://github.com/docker-library/postgres/blob/69bc540ecfffecce72d49fa7e4a46680350037f9/9.6/Dockerfile#L21-L24
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+  && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+ENV LANG en_US.utf8
+
 # 2.1.0-2.2.0-1-hadoop-2.6
-ENV NOT_ROOT_USER=pi \
+ENV LANG=C.UTF-8 \
+  LC_ALL=C.UTF-8 \
+  NOT_ROOT_USER=pi \
   UID=1001 \
   JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
   SPARK_VERSION=2.2.0 \
@@ -24,15 +32,27 @@ ENV NOT_ROOT_USER=pi \
 
 WORKDIR /
 
+# Additional source: https://hub.docker.com/r/continuumio/miniconda3/~/dockerfile/
+
+
 # Upgrade base security packages, then clean packaging leftover
 RUN set -x mkdir -p /usr/share/man/man1 && \
+  env \
   /bin/bash -e /security_updates.sh && \
   apt-get upgrade -yqq && \
   apt-get install -yqq \
   openjdk-8-jre \
   unzip \
   curl \
+  wget bzip2 ca-certificates \
+  libglib2.0-0 libxext6 libsm6 libxrender1 \
+  git mercurial subversion \
   && \
+  # miniconda3
+  echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
+  wget --quiet https://repo.continuum.io/miniconda/Miniconda3-4.3.27-Linux-x86_64.sh -O ~/miniconda.sh && \
+  /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+  rm ~/miniconda.sh && \
   # https://github.com/anapsix/docker-alpine-java/issues/18#issue-167437838
   # If you want to change the default values here, also change the values in 042-set-jvm-ttl.sh
   sed -i s/#networkaddress.cache.ttl=-1/networkaddress.cache.ttl=10/ ${JAVA_HOME}/jre/lib/security/java.security && \
@@ -66,6 +86,9 @@ RUN set -x mkdir -p /usr/share/man/man1 && \
   curl \
   && \
   /bin/bash /clean.sh
+
+
+ENV PATH /opt/conda/bin:$PATH
 
 # TODO: Do I need this?
 # ENV HADOOP_VERSION 2.6.0
