@@ -10,16 +10,30 @@ EXPOSE 8080 8082
 # source: https://github.com/docker-library/postgres/blob/69bc540ecfffecce72d49fa7e4a46680350037f9/9.6/Dockerfile#L21-L24
 RUN apt-get update && \
     apt-get install -y locales && \
+    # ************************************************************************************************************
+    # Installing the 'apt-utils' package gets rid of the 'debconf: delaying package configuration, since apt-utils is not installed'
+    # error message when installing any other package with the apt-get package manager.
+    # source: https://hub.docker.com/r/1maa/debian/~/dockerfile/
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    apt-utils && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl  && \
+    # ************************************************************************************************************
     apt-get install -yqq --no-install-recommends \
     bzip2 \
     unzip \
     xz-utils \
-    wget bzip2 ca-certificates \
+    wget bzip2 \
     libglib2.0-0 libxext6 libsm6 libxrender1 \
     git mercurial subversion \
       && \
+    echo "\nexport TERM=xterm" >> /etc/bash.bashrc && \
     rm -rf /var/lib/apt/lists/* \
   && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
+
+
+# && echo "\nexport TERM=xterm" >> /etc/bash.bashrc \
 
 # source: https://github.com/docker-library/openjdk/blob/a893fe3cd82757e7bccc0948c88bfee09bd916c3/8-jre/Dockerfile
 # Default to UTF-8 file.encoding
