@@ -52,8 +52,9 @@ ENV LANG=C.UTF-8 \
   HADOOP_VERSION=2.8.0 \
   SPARK_HOME=/usr/local/spark \
   HADOOP_HOME=/usr/local/hadoop \
-  SCRATCH_DIR=/mnt/scratch \
-  SPARK_DIST_URL=https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz \
+  SCRATCH_DIR=/mnt/scratch
+
+ENV SPARK_DIST_URL=https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz \
   HADOOP_DIST_URL=https://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
   HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop \
   PATH=$PATH:$HADOOP_HOME/bin \
