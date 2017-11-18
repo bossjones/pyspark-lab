@@ -15,17 +15,44 @@ LABEL Maintainer="Malcolm Jones <bossjones@theblacktonystark.com>"
 # RUN locale-gen en_US.UTF-8
 # RUN dpkg-reconfigure locales
 
-ENV TERM=xterm-256color \
-    DEBIAN_FRONTEND=noninteractive
+ENV TERM=xterm-256color
+#  \
+#     DEBIAN_FRONTEND=noninteractive
+
+# sed -i "s@^#precedence ::ffff:0:0/96  100@precedence ::ffff:0:0/96  100@" /etc/gai.conf; \
+#     apt-get update && \
+#     # install apt-fast and other deps
+#     apt-get -y upgrade && \
+#     apt-get install -y \
+#     language-pack-en-base && \
+#     apt-get clean && \
+#     apt-get autoclean -y && \
+#     apt-get autoremove -y && \
+#     rm -rf /var/lib/{cache,log}/ && \
+#     rm -rf /var/lib/apt/lists/*.lz4 /tmp/* /var/tmp/* && \
+#     # Set locale (fix the locale warnings)
+#     locale-gen en_US.UTF-8 && \
+#     localedef -v -c -i en_US -f UTF-8 en_US.UTF-8 || : && \
+#     export LANG=en_US.UTF-8 && \
+#     export LC_ALL=en_US.UTF-8 && \
+#     PATH=/usr/local/bin:/usr/local/sbin:$PATH && \
+#     set -x \
+#     apt-get update && \
+#     apt-get install -y software-properties-common && \
+#     add-apt-repository -y ppa:saiarcot895/myppa && \
+#     apt-get update && \
 
 # Python binary dependencies, developer tools
-RUN apt update && \
+    RUN set -x \
+    sed -i "s@^#precedence ::ffff:0:0/96  100@precedence ::ffff:0:0/96  100@" /etc/gai.conf; \
+    apt-get update && \
+    apt-get install -yqq software-properties-common python3-software-properties && \
     add-apt-repository -y ppa:jonathonf/python-3.6 && \
     apt-get update && \
     # Python 3
     apt-get -yqq install python3.6 python3.6-dev && \
     # from pdonorio/dockerizing/python/py3base
-    apt install -y -q \
+    apt-get install -yqq \
     aptitude \
     curl nano vim wget git \
     # Compiler libs
@@ -41,10 +68,13 @@ RUN apt update && \
     # CLEAN
     && \
     # install latest pip
-    cd /tmp && \
-    wget -q https://bootstrap.pypa.io/get-pip.py && \
-    python3.6 get-pip.py && \
-    rm *.py && \
+    if [ ! -e /usr/bin/pip3 ]; then : \
+        && wget -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
+        && python3 /tmp/get-pip.py "pip" \
+        && rm /tmp/get-pip.py \
+    ; fi \
+    && \
+    pip install --no-cache-dir --upgrade --force-reinstall "pip" && \
     # now clean regular apt-get stuff
     apt-get clean && \
     apt-get autoclean -y && \
@@ -66,4 +96,4 @@ RUN apt update && \
 
 COPY ./container/root /
 
-RUN goss -g /tests/wordcount/ubuntu.goss.yaml validate
+RUN ls -lta /tests && goss -g /tests/wordcount/ubuntu.goss.yaml validate

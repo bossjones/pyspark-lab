@@ -21,6 +21,6 @@ command:
   python3.6 --version:
     exit-status: 0
     stderr: ['!/./']
-  pip3 --version:
+  pip --version:
     exit-status: 0
     stderr: ['!/./']
