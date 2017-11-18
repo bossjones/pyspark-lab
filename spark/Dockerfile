@@ -108,9 +108,7 @@ RUN set -x; \
   | tar -xz -C ${HADOOP_HOME} --strip-components 1 && \
   rm -rf ${HADOOP_HOME}/share/doc && \
   find /usr/local/hadoop -name '*source*.jar' -o -name '*test*.jar' | xargs rm -f && \
-  chown -Rv root:root $HADOOP_HOME && \
-  # Clean up
-  && \
+  chown -R root:root $HADOOP_HOME && \
   /bin/bash /clean.sh
 
 ENV PATH /opt/conda/bin:$PATH
