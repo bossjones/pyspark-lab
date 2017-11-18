@@ -89,21 +89,9 @@ kafka-create-consumer:
 	--from-beginning \
 	--max-messages 42
 
-	# docker run \
-	# --net=host \
-	# --rm \
-	# confluentinc/cp-kafka:latest \
-	# kafka-console-consumer \
-	# --bootstrap-server localhost:29092 \
-	# --topic test \
-	# --new-consumer \
-	# --from-beginning \
-	# --max-messages 42
-
 kafka-up:
 	docker-compose -f docker-compose.zk-kafka.yml create && \
-	docker-compose -f docker-compose.zk-kafka.yml start && \
-	docker-compose -f docker-compose.zk-kafka.yml run
+	docker-compose -f docker-compose.zk-kafka.yml start
 
 kafka-down:
 	docker-compose -f docker-compose.zk-kafka.yml stop && \
