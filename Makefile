@@ -48,10 +48,10 @@ kafka-create-topic-test:
 	@echo "***********************************************"
 
 # Start producer
-	@curl -L 'https://raw.githubusercontent.com/XD-DENG/Spark-practice/master/sample_data/2015-12-12.csv' > 2015-12-12.csv && \
-	@echo "***********************************************" && \
-	@echo "" && \
-	@echo "Create Producer: " && \
+	curl -L -q 'https://raw.githubusercontent.com/XD-DENG/Spark-practice/master/sample_data/2015-12-12.csv' > 2015-12-12.csv && \
+	echo "***********************************************" && \
+	echo "" && \
+	echo "Create Producer: " && \
 	docker run \
 		-d \
 		-v ./2015-12-12.csv:/2015-12-12.csv \
@@ -59,5 +59,5 @@ kafka-create-topic-test:
 		--rm \
 		confluentinc/cp-kafka:latest \
 		kafka-console-producer --broker-list localhost:29092 --topic test < /2015-12-12.csv;
-	@echo "" && \
-	@echo "***********************************************"
+	echo "" && \
+	echo "***********************************************"
