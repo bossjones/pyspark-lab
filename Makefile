@@ -27,6 +27,7 @@ kafka-create-topic-test:
 		--net=host \
 		--rm confluentinc/cp-kafka:latest \
 		kafka-topics --create \
+		--if-not-exists \
 		--zookeeper localhost:32181 \
 		--replication-factor 1 \
 		--partitions 1 \
