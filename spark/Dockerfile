@@ -76,6 +76,7 @@ RUN set -x; \
   openjdk-8-jre \
   unzip \
   curl \
+  file \
   && \
   # miniconda3
   echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
@@ -109,6 +110,7 @@ RUN set -x; \
   rm -rf ${HADOOP_HOME}/share/doc && \
   find /usr/local/hadoop -name '*source*.jar' -o -name '*test*.jar' | xargs rm -f && \
   chown -R root:root $HADOOP_HOME && \
+  chown -R root:root $SPARK_HOME && \
   /bin/bash /clean.sh
 
 ENV PATH /opt/conda/bin:$PATH
