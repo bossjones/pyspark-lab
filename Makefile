@@ -55,6 +55,7 @@ kafka-create-topic-test:
 	echo "Create Producer: " && \
 	docker run \
 		-d \
+		-it \
 		-v ./data:/data \
 		--net=host \
 		--rm \
