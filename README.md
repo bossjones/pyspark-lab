@@ -6,3 +6,4 @@ Scripts to try out pyspark with. Use with https://github.com/jupyter/docker-stac
 - https://github.com/mahmoudparsian/pyspark-tutorial
 - https://github.com/svenkreiss/pysparkling
 - https://github.com/ksindi/kafka-pyspark-demo
+- https://github.com/confluentinc/cp-docker-images/wiki/Getting-Started

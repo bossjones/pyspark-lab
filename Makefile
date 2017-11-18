@@ -19,7 +19,7 @@ kafka-create-topic-twitter:
 		--new-consumer --from-beginning --max-messages 42
 
 kafka-create-topic-test:
-
+# Create a topic
 	@echo "***********************************************"
 	@echo ""
 	@echo "Create Topic: "
@@ -35,7 +35,17 @@ kafka-create-topic-test:
 	@echo ""
 	@echo "***********************************************"
 
+# Verify that the topic is created successfully
+	docker run
+	--net=host \
+	--rm \
+	confluentinc/cp-kafka:latest \
+	kafka-topics \
+	--describe \
+	--topic test \
+	--zookeeper localhost:32181
 
+# List all topics
 	@echo "***********************************************"
 	@echo ""
 	@echo "List Topics: "
@@ -48,6 +58,7 @@ kafka-create-topic-test:
 	@echo "***********************************************"
 
 # Start producer
+# Generate Data
 	mkdir -p data && \
 	curl -L -q 'https://raw.githubusercontent.com/XD-DENG/Spark-practice/master/sample_data/2015-12-12.csv' > ./data/2015-12-12.csv && \
 	echo "***********************************************" && \
@@ -65,6 +76,7 @@ kafka-create-topic-test:
 	echo "***********************************************"
 
 kafka-create-consumer:
+# Read back the message using the Console consumer
 	docker run \
 	--net=host \
 	-it \
@@ -77,9 +89,21 @@ kafka-create-consumer:
 	--from-beginning \
 	--max-messages 42
 
+	# docker run \
+	# --net=host \
+	# --rm \
+	# confluentinc/cp-kafka:latest \
+	# kafka-console-consumer \
+	# --bootstrap-server localhost:29092 \
+	# --topic test \
+	# --new-consumer \
+	# --from-beginning \
+	# --max-messages 42
+
 kafka-up:
 	docker-compose -f docker-compose.zk-kafka.yml create && \
-	docker-compose -f docker-compose.zk-kafka.yml start
+	docker-compose -f docker-compose.zk-kafka.yml start && \
+	docker-compose -f docker-compose.zk-kafka.yml run
 
 kafka-down:
 	docker-compose -f docker-compose.zk-kafka.yml stop && \
