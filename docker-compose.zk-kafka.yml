@@ -15,10 +15,13 @@ services:
       - "32181"
       - "39999"
     environment:
+      # ZOOKEEPER_SERVER_ID: 1
       ZOOKEEPER_CLIENT_PORT: 32181
       ZOOKEEPER_TICK_TIME: 2000
       KAFKA_JMX_PORT: 39999
       KAFKA_JMX_HOSTNAME: ${HOST_IP}
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
     logging:
       driver: "json-file"
       options:
