@@ -197,6 +197,9 @@ RUN echo "#!/bin/bash" > $STARTSCRIPT \
     && echo -e "# launch notebook\njupyter notebook --ip=0.0.0.0 --no-browser" >> $STARTSCRIPT \
     && chmod +x $STARTSCRIPT
 
+    # \
+    # && cp -a /scripts/pyspark_vars.sh /opt/conda/envs/python36/etc/conda/activate.d/pyspark_vars.sh
+
 # WORKDIR /data
 
 # # Move this into spark

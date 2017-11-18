@@ -33,7 +33,7 @@ function header {
 _DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Move to our working directory since this will be called via entrypoint
-cd /spark-app
+# cd /spark-app
 
 export TERM='xterm-256color'
 
