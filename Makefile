@@ -63,3 +63,16 @@ kafka-create-topic-test:
 		bash -c "kafka-console-producer --broker-list localhost:29092 --topic test < /data/2015-12-12.csv";
 	echo "" && \
 	echo "***********************************************"
+
+kafka-create-consumer:
+	docker run \
+	--net=host \
+	-it \
+	--rm \
+	confluentinc/cp-kafka:latest \
+	kafka-console-consumer \
+	--bootstrap-server localhost:29092 \
+	--topic test \
+	--new-consumer \
+	--from-beginning \
+	--max-messages 42
