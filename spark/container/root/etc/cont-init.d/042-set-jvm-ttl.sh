@@ -21,7 +21,7 @@ test_valid_ttl_value() {
 # update networkaddress.cache.ttl only if NETWORKADDRESS_CACHE_TTL is set
 if [ "${NETWORKADDRESS_CACHE_TTL}" ]; then
   NETWORKADDRESS_CACHE_TTL=`remove_white_space "${NETWORKADDRESS_CACHE_TTL}"`
-  test_valid_ttl_value "networkaddress.cache.ttl" "${NETWORKADDRESS_CACHE_TTL}" 
+  test_valid_ttl_value "networkaddress.cache.ttl" "${NETWORKADDRESS_CACHE_TTL}"
   sed -i s/networkaddress.cache.ttl=10/networkaddress.cache.ttl=${NETWORKADDRESS_CACHE_TTL}/ ${JAVA_SECURITY_FILE}
 fi
 

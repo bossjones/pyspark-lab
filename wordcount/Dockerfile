@@ -65,3 +65,5 @@ RUN apt update && \
 #     prettytable beeprint
 
 COPY ./container/root /
+
+RUN goss -g /tests/wordcount/ubuntu.goss.yaml validate
