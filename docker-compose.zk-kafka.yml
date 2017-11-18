@@ -20,6 +20,10 @@ services:
       options:
         max-size: "50m"
         max-file: "10"
+    # source: https://github.com/moby/moby/issues/23910
+    # Docker should use the host network DNS server
+    extra_hosts:
+      - "moby:127.0.0.1"
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -41,6 +45,10 @@ services:
       options:
         max-size: "50m"
         max-file: "10"
+    # source: https://github.com/moby/moby/issues/23910
+    # Docker should use the host network DNS server
+    extra_hosts:
+      - "moby:127.0.0.1"
 
 # spark:
 #   image: jupyter/pyspark-notebook
@@ -84,7 +92,6 @@ services:
     #     max-size: "50m"
     #     max-file: "10"
 
-
   kafka-manager:
     image: sheepkiller/kafka-manager:latest
     network_mode: host
@@ -105,3 +112,7 @@ services:
       options:
         max-size: "50m"
         max-file: "10"
+    # source: https://github.com/moby/moby/issues/23910
+    # Docker should use the host network DNS server
+    extra_hosts:
+      - "moby:127.0.0.1"
