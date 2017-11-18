@@ -24,6 +24,7 @@ services:
     # Docker should use the host network DNS server
     extra_hosts:
       - "moby:127.0.0.1"
+    restart: always
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -49,6 +50,7 @@ services:
     # Docker should use the host network DNS server
     extra_hosts:
       - "moby:127.0.0.1"
+    restart: always
 
 # spark:
 #   image: jupyter/pyspark-notebook
@@ -106,7 +108,6 @@ services:
       ZK_HOSTS: localhost:32181
       APPLICATION_SECRET: letmein
       KM_ARGS: -Djava.net.preferIPv4Stack=true
-    restart: always
     logging:
       driver: "json-file"
       options:
@@ -116,3 +117,4 @@ services:
     # Docker should use the host network DNS server
     extra_hosts:
       - "moby:127.0.0.1"
+    restart: always
