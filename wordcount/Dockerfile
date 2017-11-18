@@ -142,6 +142,7 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 ENV CONDA_ENV_PATH=/opt/conda
 ENV MY_CONDA_PY3ENV="python36"
 ENV CONDA_ACTIVATE="source $CONDA_ENV_PATH/bin/activate $MY_CONDA_PY3ENV"
+# ENV CONDA_ACTIVATE=". $CONDA_ENV_PATH/bin/activate $MY_CONDA_PY3ENV"
 ENV PATH=$CONDA_ENV_PATH/bin:$PATH
 
 ###############################
@@ -154,7 +155,8 @@ ENV PATH=$CONDA_ENV_PATH/bin:$PATH
 RUN apt-get update && \
     apt-get install -yqq \
     python-qt4 \
-    libxml2-dev libxslt-dev
+    libxml2-dev libxslt-dev \
+    mesos
 
 ###############################
 # Install PyData modules and IPython dependencies

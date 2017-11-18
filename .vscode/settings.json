@@ -103,6 +103,8 @@
     "*.swp": "explorerExcludedFiles",
     ".DS_Store?": "explorerExcludedFiles",
     ".sass-cache": "explorerExcludedFiles",
-    "*.css.map": "explorerExcludedFiles"
+    "*.css.map": "explorerExcludedFiles",
+    ".idea/": "explorerExcludedFiles",
+    "metastore_db/": "explorerExcludedFiles"
   }
 }
