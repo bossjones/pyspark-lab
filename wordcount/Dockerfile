@@ -80,7 +80,7 @@ ENV TERM=xterm-256color \
     # && echo "${NOT_ROOT_USER}:raspberry" | chpasswd \
     sed -i "s@^#precedence ::ffff:0:0/96  100@precedence ::ffff:0:0/96  100@" /etc/gai.conf; \
     apt-get update && \
-    apt-get install -yqq software-properties-common python3-software-properties && \
+    # apt-get install -yqq software-properties-common python3-software-properties && \
     # add-apt-repository -y ppa:jonathonf/python-3.6 && \
     # apt-get update && \
     # # Python 3

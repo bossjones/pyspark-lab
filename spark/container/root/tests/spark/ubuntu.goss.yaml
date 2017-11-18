@@ -17,3 +17,9 @@ command:
     stdout: []
     stderr: ["version 2.2."]
     timeout: 30000
+command:
+  "file /usr/local/lib/libmesos.so":
+    exit-status: 0
+    stdout: []
+    stderr: []
+    timeout: 30000
