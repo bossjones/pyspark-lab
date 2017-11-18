@@ -17,10 +17,14 @@ gossfile:
 #     stdout: []
 #     stderr: ["version 2.2."]
 #     timeout: 30000
+
+# /opt/conda/bin/python3.6
+# /opt/conda/bin/pip3
+
 command:
-  python3.6 --version:
-    exit-status: 0
-    stderr: ['!/./']
+  # python3.6 --version:
+  #   exit-status: 0
+  #   stderr: ['!/./']
   pip --version:
     exit-status: 0
     stderr: ['!/./']
