@@ -93,8 +93,8 @@ RUN set -x; \
   apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv E56151BF && \
   apt-get -y update && \
   apt-get -y install mesos curl && \
-  apt-get clean && rm -rf /var/lib/apt/lists/* && \
-  apt-get -y purge zookeeper zookeeper-bin zookeeperd && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* && \
   # Install spark and hadoop
   mkdir -p ${SPARK_HOME} && \
   curl --retry 3 -sSL ${SPARK_DIST_URL} \
@@ -139,6 +139,9 @@ ENV PATH /opt/conda/bin:$PATH
 
 # Overlay the root filesystem from this repo
 COPY ./container/root /
+
+# Move this into spark
+ENV MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so
 
 RUN goss -g /tests/spark/ubuntu.goss.yaml validate
 

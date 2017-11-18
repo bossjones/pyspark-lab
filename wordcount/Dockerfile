@@ -19,7 +19,7 @@ ENV TERM=xterm-256color \
     MESOS_DIRECTORY=/tmp \
     NOT_ROOT_USER_HOME=/home/${NOT_ROOT_USER} \
     MAIN_DIR=${SPARK_HOME}
-#  \
+
 #     DEBIAN_FRONTEND=noninteractive
 
 # sed -i "s@^#precedence ::ffff:0:0/96  100@precedence ::ffff:0:0/96  100@" /etc/gai.conf; \
@@ -63,7 +63,6 @@ ENV TERM=xterm-256color \
 
 # This step will need to be completed on all the servers. We need to install the package dependencies for mesos.
 
-
 # sudo apt install -y openjdk-8-jdk
 # sudo apt -y install build-essential python-dev libcurl4-nss-dev libsasl2-dev libsasl2-modules maven libapr1-dev libsvn-dev
 # sudo apt install unzip
@@ -102,8 +101,6 @@ ENV TERM=xterm-256color \
     # python3-sphinx pandoc \
     # CLEAN
     && \
-    # I think mesos got removed for some reason, install it
-    apt-get -y install mesos && \
     # install latest pip
     if [ ! -e /usr/bin/pip3 ]; then : \
         && wget -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
@@ -201,5 +198,8 @@ RUN echo "#!/bin/bash" > $STARTSCRIPT \
     && chmod +x $STARTSCRIPT
 
 # WORKDIR /data
+
+# # Move this into spark
+# ENV MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so
 
 RUN ls -lta /tests && goss -g /tests/wordcount/ubuntu.goss.yaml validate
