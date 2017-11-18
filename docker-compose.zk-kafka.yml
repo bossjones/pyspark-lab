@@ -10,8 +10,10 @@ services:
     network_mode: host
     ports:
       - "32181:32181"
+      - "39999:39999"
     expose:
       - "32181"
+      - "39999"
     environment:
       ZOOKEEPER_CLIENT_PORT: 32181
       ZOOKEEPER_TICK_TIME: 2000
@@ -33,8 +35,10 @@ services:
     network_mode: host
     ports:
       - "29092:29092"
+      - "49999:49999"
     expose:
       - "29092"
+      - "49999"
     depends_on:
       - zookeeper
     links:
