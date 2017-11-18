@@ -110,12 +110,8 @@ RUN set -x; \
   find /usr/local/hadoop -name '*source*.jar' -o -name '*test*.jar' | xargs rm -f && \
   chown -Rv root:root $HADOOP_HOME && \
   # Clean up
-  apt-get remove --purge -yq \
-  unzip \
-  curl \
   && \
   /bin/bash /clean.sh
-
 
 ENV PATH /opt/conda/bin:$PATH
 
