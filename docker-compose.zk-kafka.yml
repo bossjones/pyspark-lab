@@ -8,6 +8,10 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     network_mode: host
+    ports:
+      - "32181:32181"
+    expose:
+      - "32181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 32181
       ZOOKEEPER_TICK_TIME: 2000
@@ -15,6 +19,10 @@ services:
   kafka:
     image: confluentinc/cp-kafka:latest
     network_mode: host
+    ports:
+      - "29092:29092"
+    expose:
+      - "29092"
     depends_on:
       - zookeeper
     environment:
