@@ -60,6 +60,6 @@ kafka-create-topic-test:
 		--net=host \
 		--rm \
 		confluentinc/cp-kafka:latest \
-		kafka-console-producer --broker-list localhost:29092 --topic test < /data/2015-12-12.csv;
+		bash -c "kafka-console-producer --broker-list localhost:29092 --topic test < /data/2015-12-12.csv";
 	echo "" && \
 	echo "***********************************************"
