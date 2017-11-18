@@ -1,4 +1,4 @@
-SHELL = $(shell which bash)
+SHELL := $(shell which bash)
 
 # export DOCKER_IP = $(shell which docker-machine > /dev/null 2>&1 && docker-machine ip $(DOCKER_MACHINE_NAME))
 
@@ -9,7 +9,7 @@ YOUR_HOSTNAME := $(shell hostname | cut -d "." -f1 | awk '{print $1}')
 export HOST_IP=$(shell curl ipv4.icanhazip.com 2>/dev/null)
 
 username := bossjones
-container_name := boss-wordcount
+container_name := boss-pyspark-pi
 
 GIT_BRANCH  = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_SHA     = $(shell git rev-parse HEAD)
