@@ -47,8 +47,8 @@ services:
       - "49999"
     depends_on:
       - zookeeper
-    links:
-      - zookeeper
+    # links:
+    #   - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: localhost:32181
@@ -131,9 +131,9 @@ services:
       - "9000:9000"
     expose:
       - "9000"
-    links:
-      - zookeeper
-      - kafka
+    # links:
+    #   - zookeeper
+    #   - kafka
     environment:
       ZK_HOSTS: localhost:32181
       APPLICATION_SECRET: letmein
