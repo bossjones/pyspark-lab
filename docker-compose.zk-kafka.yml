@@ -25,6 +25,7 @@ services:
       # ZK_CONFIG: tickTime=2000,initLimit=10,syncLimit=5,maxClientCnxns=128,forceSync=no,clientPort=2181
       # ZK_ID: 1
       # KAFKA_JMX_OPTS
+      DOCKERHOST: ${DOCKERHOST}
     logging:
       driver: "json-file"
       options:
@@ -32,9 +33,10 @@ services:
         max-file: "10"
     # source: https://github.com/moby/moby/issues/23910
     # Docker should use the host network DNS server
-    # extra_hosts:
-    #   - "moby:127.0.0.1"
-    #   - "default:127.0.0.1"
+    extra_hosts:
+      - "moby:127.0.0.1"
+      - "default:127.0.0.1"
+      - "dockerhost:127.0.0.1"
     restart: always
     healthcheck:
       test: echo srvr | nc localhost 32181 | grep Mode || exit 1
@@ -69,6 +71,7 @@ services:
     #   KAFKA_LOG4J_LOGGERS: kafka.controller=WARN,kafka.foo.bar=DEBUG
     #   KAFKA_LOG4J_ROOT_LOGLEVEL: WARN
     #   KAFKA_TOOLS_LOG4J_LOGLEVEL: ERROR
+      DOCKERHOST: ${DOCKERHOST}
     # labels:
     # - io.confluent.docker.testing=true
     logging:
@@ -78,9 +81,10 @@ services:
         max-file: "10"
     # source: https://github.com/moby/moby/issues/23910
     # Docker should use the host network DNS server
-    # extra_hosts:
-    #   - "moby:127.0.0.1"
-    #   - "default:127.0.0.1"
+    extra_hosts:
+      - "moby:127.0.0.1"
+      - "default:127.0.0.1"
+      - "dockerhost:127.0.0.1"
     healthcheck:
       test: /usr/bin/kafka-run-class kafka.admin.BrokerApiVersionsCommand --bootstrap-server localhost:29092 | grep 101 || exit 1
       interval: 5s
@@ -144,6 +148,7 @@ services:
       ZK_HOSTS: localhost:32181
       APPLICATION_SECRET: letmein
       KM_ARGS: -Djava.net.preferIPv4Stack=true
+      DOCKERHOST: ${DOCKERHOST}
     logging:
       driver: "json-file"
       options:
@@ -151,7 +156,8 @@ services:
         max-file: "10"
     # source: https://github.com/moby/moby/issues/23910
     # Docker should use the host network DNS server
-    # extra_hosts:
-    #   - "moby:127.0.0.1"
-    #   - "default:127.0.0.1"
+    extra_hosts:
+      - "moby:127.0.0.1"
+      - "default:127.0.0.1"
+      - "dockerhost:127.0.0.1"
     restart: always
