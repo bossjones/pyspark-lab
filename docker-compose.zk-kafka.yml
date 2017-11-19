@@ -161,3 +161,8 @@ services:
       - "default:127.0.0.1"
       - "dockerhost:127.0.0.1"
     restart: always
+    healthcheck:
+      test: curl -s http://localhost:9000/ || exit 1
+      interval: 5s
+      timeout: 2s
+      retries: 3

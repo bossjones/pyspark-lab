@@ -67,7 +67,7 @@ kafka-create-topic-test:
 	docker run \
 		-d \
 		-it \
-		-v ./data:/data \
+		-v data:/data \
 		--net=host \
 		--rm \
 		confluentinc/cp-kafka:latest \
