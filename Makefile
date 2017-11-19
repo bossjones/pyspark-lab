@@ -96,3 +96,5 @@ kafka-up:
 kafka-down:
 	docker-compose -f docker-compose.zk-kafka.yml stop && \
 	docker-compose -f docker-compose.zk-kafka.yml down
+
+kafka-restart: kafka-down kafka-up
