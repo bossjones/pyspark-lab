@@ -32,9 +32,15 @@ services:
         max-file: "10"
     # source: https://github.com/moby/moby/issues/23910
     # Docker should use the host network DNS server
-    extra_hosts:
-      - "moby:127.0.0.1"
+    # extra_hosts:
+    #   - "moby:127.0.0.1"
+    #   - "default:127.0.0.1"
     restart: always
+    healthcheck:
+      test: echo srvr | nc localhost 32181 | grep Mode || exit 1
+      interval: 5s
+      timeout: 2s
+      retries: 3
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -50,7 +56,7 @@ services:
     # links:
     #   - zookeeper
     environment:
-      KAFKA_BROKER_ID: 1
+      KAFKA_BROKER_ID: 101
       KAFKA_ZOOKEEPER_CONNECT: localhost:32181
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:29092
@@ -72,11 +78,11 @@ services:
         max-file: "10"
     # source: https://github.com/moby/moby/issues/23910
     # Docker should use the host network DNS server
-    extra_hosts:
-      - "moby:127.0.0.1"
-      - "default:127.0.0.1"
+    # extra_hosts:
+    #   - "moby:127.0.0.1"
+    #   - "default:127.0.0.1"
     healthcheck:
-      test: /usr/bin/kafka-run-class kafka.admin.BrokerApiVersionsCommand --bootstrap-server localhost:29092 | grep 1 || exit 1
+      test: /usr/bin/kafka-run-class kafka.admin.BrokerApiVersionsCommand --bootstrap-server localhost:29092 | grep 101 || exit 1
       interval: 5s
       timeout: 2s
       retries: 3
@@ -145,7 +151,7 @@ services:
         max-file: "10"
     # source: https://github.com/moby/moby/issues/23910
     # Docker should use the host network DNS server
-    extra_hosts:
-      - "moby:127.0.0.1"
-      - "default:127.0.0.1"
+    # extra_hosts:
+    #   - "moby:127.0.0.1"
+    #   - "default:127.0.0.1"
     restart: always
