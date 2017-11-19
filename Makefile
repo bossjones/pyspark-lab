@@ -89,12 +89,24 @@ kafka-create-consumer:
 	--from-beginning \
 	--max-messages 42
 
-kafka-up:
+dc-up:
 	docker-compose -f docker-compose.zk-kafka.yml create && \
 	docker-compose -f docker-compose.zk-kafka.yml start
 
-kafka-down:
+dc-down:
 	docker-compose -f docker-compose.zk-kafka.yml stop && \
 	docker-compose -f docker-compose.zk-kafka.yml down
 
 kafka-restart: kafka-down kafka-up
+
+zk-up:
+	docker-compose -f docker-compose.zk-kafka.yml up -d zookeeper
+
+zk-down:
+	docker-compose -f docker-compose.zk-kafka.yml down zookeeper
+
+kafka-up:
+	docker-compose -f docker-compose.zk-kafka.yml up -d kafka
+
+kafka-down:
+	docker-compose -f docker-compose.zk-kafka.yml down kafka

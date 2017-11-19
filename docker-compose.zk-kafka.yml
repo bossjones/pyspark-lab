@@ -24,6 +24,7 @@ services:
       ZOOKEEPER_SYNC_LIMIT: 2
       # ZK_CONFIG: tickTime=2000,initLimit=10,syncLimit=5,maxClientCnxns=128,forceSync=no,clientPort=2181
       # ZK_ID: 1
+      # KAFKA_JMX_OPTS
     logging:
       driver: "json-file"
       options:
