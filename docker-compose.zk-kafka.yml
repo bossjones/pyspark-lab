@@ -22,6 +22,8 @@ services:
       # KAFKA_JMX_HOSTNAME: 159.203.110.77
       ZOOKEEPER_INIT_LIMIT: 5
       ZOOKEEPER_SYNC_LIMIT: 2
+      # ZK_CONFIG: tickTime=2000,initLimit=10,syncLimit=5,maxClientCnxns=128,forceSync=no,clientPort=2181
+      # ZK_ID: 1
     logging:
       driver: "json-file"
       options:
@@ -48,8 +50,8 @@ services:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: localhost:32181/jmx
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:29092
+      KAFKA_ZOOKEEPER_CONNECT: 127.0.0.1:32181/jmx
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:29092
       # KAFKA_JMX_PORT: 49999
       # KAFKA_JMX_HOSTNAME: 159.203.110.77
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -125,7 +127,7 @@ services:
       - zookeeper
       - kafka
     environment:
-      ZK_HOSTS: localhost:32181
+      ZK_HOSTS: 127.0.0.1:32181
       APPLICATION_SECRET: letmein
       KM_ARGS: -Djava.net.preferIPv4Stack=true
     logging:
