@@ -103,10 +103,19 @@ zk-up:
 	docker-compose -f docker-compose.zk-kafka.yml up -d zookeeper
 
 zk-down:
-	docker-compose -f docker-compose.zk-kafka.yml down zookeeper
+	docker-compose -f docker-compose.zk-kafka.yml stop zookeeper && \
+	docker-compose -f docker-compose.zk-kafka.yml rm zookeeper
 
 kafka-up:
 	docker-compose -f docker-compose.zk-kafka.yml up -d kafka
 
 kafka-down:
-	docker-compose -f docker-compose.zk-kafka.yml down kafka
+	docker-compose -f docker-compose.zk-kafka.yml stop kafka && \
+	docker-compose -f docker-compose.zk-kafka.yml rm kafka
+
+manager-up:
+	docker-compose -f docker-compose.zk-kafka.yml up -d kafka-manager
+
+manager-down:
+	docker-compose -f docker-compose.zk-kafka.yml stop kafka-manager && \
+	docker-compose -f docker-compose.zk-kafka.yml rm kafka-manager
