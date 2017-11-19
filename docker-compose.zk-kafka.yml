@@ -81,7 +81,7 @@ services:
       KAFKA_JMX_PORT: 49999
       # **************************************************
       # https://gist.github.com/samklr/75688745ce97ee969bf7f4485a1d0f5c
-      # KAFKA_JMX_HOSTNAME: kafka
+      KAFKA_JMX_HOSTNAME: kafka
       # KAFKA_JMX_PORT: 49999
       # KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       # CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:9092
