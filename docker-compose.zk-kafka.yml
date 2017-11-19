@@ -57,12 +57,27 @@ services:
       - zookeeper
     # links:
     #   - zookeeper
+    # ****************************************************************
+    # source: https://github.com/MohammadMazraeh/vgad/blob/a76c3ff3552529ecd21c3ec8b60ef1d4cfab4ee8/Openshift-Based/logstash/logstash.yml
+    # environment:
+    #   KAFKA_BROKER_ID: 1
+    #   KAFKA_ZOOKEEPER_CONNECT: 172.16.159.102:2181
+    #   KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://172.16.159.102:9092
+    #   KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    #   KAFKA_BROCKER_RACK: r1
+    #   KAFKA_NUM_PARTITIONS: 15
+    #   KAFKA_DEFAULT_REPLICATION_FACTOR: 2
+    #   KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: "true"
+    #   JMX_PORT: 8000
+    # ****************************************************************
     environment:
       KAFKA_BROKER_ID: 101
       KAFKA_ZOOKEEPER_CONNECT: localhost:32181
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:29092
       JMX_PORT: 49999
+      # KAFKA_MESSAGE_MAX_BYTES: 100000000
+      # KAFKA_REPLICA_FETCH_MAX_BYTES: 104857600
       # KAFKA_ADVERTISED_PORT:
       # KAFKA_JMX_PORT: 49999
       # KAFKA_JMX_HOSTNAME: 159.203.110.77
@@ -93,6 +108,8 @@ services:
       timeout: 2s
       retries: 3
     restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 # spark:
 #   image: jupyter/pyspark-notebook
