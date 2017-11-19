@@ -15,7 +15,7 @@ services:
       - "32181"
       - "39999"
     environment:
-      # ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_SERVER_ID: 1
       ZOOKEEPER_CLIENT_PORT: 32181
       ZOOKEEPER_TICK_TIME: 2000
       # KAFKA_JMX_PORT: 39999
@@ -50,8 +50,9 @@ services:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 127.0.0.1:32181/jmx
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:29092
+      KAFKA_ZOOKEEPER_CONNECT: localhost:32181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:29092
       # KAFKA_JMX_PORT: 49999
       # KAFKA_JMX_HOSTNAME: 159.203.110.77
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -72,6 +73,12 @@ services:
     # Docker should use the host network DNS server
     extra_hosts:
       - "moby:127.0.0.1"
+      - "default:127.0.0.1"
+    healthcheck:
+      test: /usr/bin/kafka-run-class kafka.admin.BrokerApiVersionsCommand --bootstrap-server localhost:29092 | grep 1 || exit 1
+      interval: 5s
+      timeout: 2s
+      retries: 3
     restart: always
 
 # spark:
@@ -127,7 +134,7 @@ services:
       - zookeeper
       - kafka
     environment:
-      ZK_HOSTS: 127.0.0.1:32181
+      ZK_HOSTS: localhost:32181
       APPLICATION_SECRET: letmein
       KM_ARGS: -Djava.net.preferIPv4Stack=true
     logging:
@@ -139,4 +146,5 @@ services:
     # Docker should use the host network DNS server
     extra_hosts:
       - "moby:127.0.0.1"
+      - "default:127.0.0.1"
     restart: always
