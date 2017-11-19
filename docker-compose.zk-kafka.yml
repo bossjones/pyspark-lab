@@ -91,7 +91,7 @@ services:
     #   KAFKA_LOG4J_ROOT_LOGLEVEL: WARN
     #   KAFKA_TOOLS_LOG4J_LOGLEVEL: ERROR
       DOCKERHOST: ${DOCKERHOST}
-      KAFKA_JMX_OPTS: "-Xmx200m -Xms512m -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=localhost -Djava.net.preferIPv4Stack=true -Dcom.sun.management.jmxremote.port=49999 -Dcom.sun.management.jmxremote.rmi.port=49999"
+      KAFKA_JMX_OPTS: "-Xms512m -Xmx200m -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=localhost -Djava.net.preferIPv4Stack=true -Dcom.sun.management.jmxremote.port=49999 -Dcom.sun.management.jmxremote.rmi.port=49999"
     # labels:
     # - io.confluent.docker.testing=true
     logging:
