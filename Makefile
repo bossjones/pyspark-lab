@@ -36,7 +36,7 @@ kafka-create-topic-test:
 	@echo "***********************************************"
 
 # Verify that the topic is created successfully
-	docker run
+	docker run \
 	--net=host \
 	--rm \
 	confluentinc/cp-kafka:latest \
@@ -53,7 +53,7 @@ kafka-create-topic-test:
 		--net=host \
 		--rm confluentinc/cp-kafka:latest \
 		kafka-topics --list \
-		--zookeeper localhost:32181
+		--zookeeper localhost:32181;
 	@echo ""
 	@echo "***********************************************"
 
