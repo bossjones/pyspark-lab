@@ -3,6 +3,8 @@ export HOST_IP=$(shell curl ipv4.icanhazip.com 2>/dev/null)
 
 export PATH := ./bin:$(PATH)
 
+EXISTING_VOLUMES := $(shell docker volume ls | awk '{print $2}' | xargs)
+
 kafka-create-topic-twitter:
 # create twitter Kafka topic if none exist
 	docker run \
@@ -204,3 +206,6 @@ wordcount-bash-up:
 wordcount-bash-down:
 	docker-compose -f docker-compose.wordcount.yml stop wordcount && \
 	docker-compose -f docker-compose.wordcount.yml rm -f wordcount
+
+docker-rm-volumes:
+	docker volume rm $(EXISTING_VOLUMES)
