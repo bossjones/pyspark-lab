@@ -152,7 +152,7 @@ kafka-create-consumer:
 	--from-beginning \
 	--max-messages 42
 
-dc-up:
+dc-up: kafka-create-manager-cluster
 	docker-compose -f docker-compose.zk-kafka.yml create && \
 	docker-compose -f docker-compose.zk-kafka.yml start
 
