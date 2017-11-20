@@ -192,4 +192,9 @@ wordlist-download:
 	git clone https://github.com/dwyl/english-words.git ~/dev/english-words
 
 wordcount-bash:
-	docker run --rm -i -t bossjones/boss-pyspark-wordcount:latest bash
+	docker run \
+	--name wordcount_bash \
+	--net=host \
+	--rm \
+	-it \
+	bossjones/boss-pyspark-wordcount:latest bash
