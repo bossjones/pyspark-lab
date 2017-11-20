@@ -156,7 +156,7 @@ RUN apt-get update && \
     apt-get install -yqq \
     python-qt4 \
     libxml2-dev libxslt-dev \
-    mesos
+    mesos librdkafka-dev
 
 ###############################
 # Install PyData modules and IPython dependencies
@@ -184,7 +184,7 @@ RUN $CONDA_ACTIVATE && \
     conda install -y numpy pandas pip setuptools && \
     conda install -c conda-forge pyspark && \
     conda install -y py4j && \
-    pip install pdbpp gnureadline pydocstyle autopep8 pylint coverage flake8 && \
+    pip install pdbpp gnureadline pydocstyle autopep8 pylint coverage flake8 confluent-kafka && \
     git clone https://github.com/bossjones/boss-cheatsheets.git ~/.cheat
     # Note: this is how you use the conda pip instead of the existing one
 
