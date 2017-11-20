@@ -195,6 +195,7 @@ wordcount-bash:
 	docker run \
 	--name wordcount_bash \
 	--net=host \
+	-v wordcount:/wordcount:rw \
 	--rm \
 	-it \
 	bossjones/boss-pyspark-wordcount:latest bash
