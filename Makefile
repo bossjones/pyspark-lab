@@ -1,6 +1,7 @@
 YOUR_HOSTNAME := $(shell hostname | cut -d "." -f1 | awk '{print $1}')
 export HOST_IP=$(shell curl ipv4.icanhazip.com 2>/dev/null)
 
+export PATH := ./bin:$(PATH)
 
 kafka-create-topic-twitter:
 # create twitter Kafka topic if none exist
@@ -184,5 +185,4 @@ manager-down:
 
 # source: https://github.com/yahoo/kafka-manager/issues/244
 kafka-create-manager-cluster:
-	# @echo "curl $${HOST_IP}:29092/clusters --data-urlencode \"name=$${_YOUR_HOSTNAME}&zkHosts=$${HOST_IP}:32181/&kafkaVersion=0.9.0.1&jmxUser=&jmxPass=&tuning.brokerViewUpdatePeriodSeconds=30&tuning.clusterManagerThreadPoolSize=2&tuning.clusterManagerThreadPoolQueueSize=100&tuning.kafkaCommandThreadPoolSize=2&tuning.kafkaCommandThreadPoolQueueSize=100&tuning.logkafkaCommandThreadPoolSize=2&tuning.logkafkaCommandThreadPoolQueueSize=100&tuning.logkafkaUpdatePeriodSeconds=30&tuning.partitionOffsetCacheTimeoutSecs=5&tuning.brokerViewThreadPoolSize=2&tuning.brokerViewThreadPoolQueueSize=1000&tuning.offsetCacheThreadPoolSize=2&tuning.offsetCacheThreadPoolQueueSize=1000&tuning.kafkaAdminClientThreadPoolSize=2&tuning.kafkaAdminClientThreadPoolQueueSize=1000\" -X POST"
-	curl $${HOST_IP}:29092/clusters --data-urlencode "name=$${_YOUR_HOSTNAME}&zkHosts=$${HOST_IP}:32181/&kafkaVersion=0.9.0.1&jmxUser=&jmxPass=&tuning.brokerViewUpdatePeriodSeconds=30&tuning.clusterManagerThreadPoolSize=2&tuning.clusterManagerThreadPoolQueueSize=100&tuning.kafkaCommandThreadPoolSize=2&tuning.kafkaCommandThreadPoolQueueSize=100&tuning.logkafkaCommandThreadPoolSize=2&tuning.logkafkaCommandThreadPoolQueueSize=100&tuning.logkafkaUpdatePeriodSeconds=30&tuning.partitionOffsetCacheTimeoutSecs=5&tuning.brokerViewThreadPoolSize=2&tuning.brokerViewThreadPoolQueueSize=1000&tuning.offsetCacheThreadPoolSize=2&tuning.offsetCacheThreadPoolQueueSize=1000&tuning.kafkaAdminClientThreadPoolSize=2&tuning.kafkaAdminClientThreadPoolQueueSize=1000" -X POST
+	create-kafka-manager-cluster
