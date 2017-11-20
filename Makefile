@@ -191,11 +191,17 @@ wordlist-download:
 	\rm -rfv ~/dev/english-words && \
 	git clone https://github.com/dwyl/english-words.git ~/dev/english-words
 
-wordcount-bash:
-	docker run \
-	--name wordcount_bash \
-	--net=host \
-	-v wordcount:/wordcount:rw \
-	--rm \
-	-it \
-	bossjones/boss-pyspark-wordcount:latest bash
+# docker run \
+# --name wordcount_bash \
+# --net=host \
+# -v wordcount:/wordcount:rw \
+# --rm \
+# -it \
+# bossjones/boss-pyspark-wordcount:latest bash
+wordcount-bash-up:
+	docker-compose -f docker-compose.wordcount.yml create && \
+	docker-compose -f docker-compose.wordcount.yml start
+
+wordcount-bash-down:
+	docker-compose -f docker-compose.wordcount.yml stop wordcount && \
+	docker-compose -f docker-compose.wordcount.yml rm -f wordcount
