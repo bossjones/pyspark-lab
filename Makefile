@@ -190,3 +190,6 @@ kafka-create-manager-cluster:
 wordlist-download:
 	\rm -rfv ~/dev/english-words && \
 	git clone https://github.com/dwyl/english-words.git ~/dev/english-words
+
+wordcount-bash:
+	docker run --rm -i -t bossjones/boss-pyspark-wordcount:latest bash
