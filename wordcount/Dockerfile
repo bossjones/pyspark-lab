@@ -122,7 +122,12 @@ COPY ./container/root /
 
 # Python essential libs
 # https://github.com/pdonorio/dockerizing/blob/master/python/py3base/Dockerfile
-RUN /opt/conda/bin/pip install --upgrade \
+# source: https://github.com/ActivisionGameScience/ags_conda_recipes
+RUN cp -a /scripts/.condarc /root/.condarc && \
+    conda update --all && \
+    conda install jinja2 git conda-build anaconda-client && \
+    && \
+    /opt/conda/bin/pip install --upgrade \
     # the very base
     setuptools pip lxml ipython \
     # utilities
