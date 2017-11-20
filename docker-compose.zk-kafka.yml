@@ -25,7 +25,7 @@ services:
       # ZK_CONFIG: tickTime=2000,initLimit=10,syncLimit=5,maxClientCnxns=128,forceSync=no,clientPort=2181
       # ZK_ID: 1
       # KAFKA_JMX_OPTS
-      JMXPORT: 39999
+      # JMXPORT: 39999
       DOCKERHOST: ${DOCKERHOST}
     logging:
       driver: "json-file"
@@ -77,8 +77,8 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: localhost:32181
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:29092
-      JMX_PORT: 49999
-      KAFKA_JMX_PORT: 49999
+      # JMX_PORT: 49999
+      # KAFKA_JMX_PORT: 49999
       # **************************************************
       # https://gist.github.com/samklr/75688745ce97ee969bf7f4485a1d0f5c
       KAFKA_JMX_HOSTNAME: kafka
