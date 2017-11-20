@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+git clone https://github.com/edenhill/librdkafka /usr/local/src/librdkafka && cd /usr/local/src/librdkafka && git checkout v0.11.1
+
+./configure && make && make install && ldconfig

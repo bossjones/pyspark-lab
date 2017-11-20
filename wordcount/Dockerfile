@@ -119,10 +119,48 @@ ENV TERM=xterm-256color \
 
 COPY ./container/root /
 
+####################################################################################
+# source: https://github.com/ActivisionGameScience/ags_conda_recipes
+# current error:
+# Fetching package metadata .....
+# WARNING: The remote server could not find the noarch directory for the
+# requested channel with url: https://conda.anaconda.org/confluent-kafka
+
+# It is possible you have given conda an invalid channel. Please double-check
+# your conda configuration using `conda config --show`.
+
+# If the requested url is in fact a valid conda channel, please request that the
+# channel administrator create `noarch/repodata.json` and associated
+# `noarch/repodata.json.bz2` files, even if `noarch/repodata.json` is empty.
+# $ mkdir noarch
+# $ echo '{}' > noarch/repodata.json
+# $ bzip2 -k noarch/repodata.json
+# ..........
+# Solving package specifications: .
+
+# UnsatisfiableError: The following specifications were found to be in conflict:
+# - pykafka -> python 3.4* -> xz 5.0.5
+# - python 3.6*
+# Use "conda info <package>" to see the dependencies for each package.
+
+# RUN cp -a /scripts/.condarc /root/.condarc && \
+#     conda update --all && \
+#     conda install jinja2 git conda-build anaconda-client
+####################################################################################
 
 # Python essential libs
 # https://github.com/pdonorio/dockerizing/blob/master/python/py3base/Dockerfile
-RUN /opt/conda/bin/pip install --upgrade \
+RUN conda update --all && \
+    conda install jinja2 git conda-build anaconda-client && \
+    # install and compile libkafka
+    git clone https://github.com/edenhill/librdkafka /usr/local/src/librdkafka && \
+    cd /usr/local/src/librdkafka && \
+    git checkout v0.11.1 && \
+    ./configure && \
+    make && \
+    make install && \
+    ldconfig && \
+    /opt/conda/bin/pip install --upgrade \
     # the very base
     setuptools pip lxml ipython \
     # utilities
@@ -130,7 +168,7 @@ RUN /opt/conda/bin/pip install --upgrade \
     # cli utilities
     plumbum paramiko invoke \
     # pretty print
-    prettytable beeprint
+    prettytable beeprint confluent-kafka
 
 ###############################
 ## A little Docker magic here
@@ -177,6 +215,8 @@ RUN conda create -y -n $MY_CONDA_PY3ENV python=3.6 && \
     && \
     conda clean -y -t
 
+# RUN conda install -c confluent-kafka pykafka
+
 ###############################
 # Add other libraries not found in anaconda
 RUN $CONDA_ACTIVATE && \
@@ -184,7 +224,7 @@ RUN $CONDA_ACTIVATE && \
     conda install -y numpy pandas pip setuptools && \
     conda install -c conda-forge pyspark && \
     conda install -y py4j && \
-    pip install pdbpp gnureadline pydocstyle autopep8 pylint coverage flake8 && \
+    pip install pdbpp gnureadline pydocstyle autopep8 pylint coverage flake8 confluent-kafka && \
     git clone https://github.com/bossjones/boss-cheatsheets.git ~/.cheat
     # Note: this is how you use the conda pip instead of the existing one
 
@@ -199,8 +239,8 @@ RUN echo "#!/bin/bash" > $STARTSCRIPT \
     && echo -e "# launch notebook\njupyter notebook --ip=0.0.0.0 --no-browser" >> $STARTSCRIPT \
     && chmod +x $STARTSCRIPT
 
-    # \
-    # && cp -a /scripts/pyspark_vars.sh /opt/conda/envs/python36/etc/conda/activate.d/pyspark_vars.sh
+# \
+# && cp -a /scripts/pyspark_vars.sh /opt/conda/envs/python36/etc/conda/activate.d/pyspark_vars.sh
 
 # WORKDIR /data
 
