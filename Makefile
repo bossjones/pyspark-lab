@@ -199,8 +199,7 @@ wordlist-download:
 # -it \
 # bossjones/boss-pyspark-wordcount:latest bash
 wordcount-bash-up:
-	docker-compose -f docker-compose.wordcount.yml create && \
-	docker-compose -f docker-compose.wordcount.yml start
+	docker-compose -f docker-compose.wordcount.yml up -d wordcount
 
 wordcount-bash-down:
 	docker-compose -f docker-compose.wordcount.yml stop wordcount && \
