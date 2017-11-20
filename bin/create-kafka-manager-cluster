@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -x
+
+CreateKafkaManagerCluster() {
+    # source: https://github.com/yahoo/kafka-manager/issues/244
+    curl -XPOST -D- ${HOST_IP}:9000/clusters --data "name=${_YOUR_HOSTNAME}&zkHosts=${HOST_IP}:32181&kafkaVersion=0.9.0.1"
+}
+
+
+until CreateKafkaManagerCluster; do
+  echo 'Creating Kafka Manager Cluster...'
+  sleep 1
+done
+echo 'Done!'
+
+wait
