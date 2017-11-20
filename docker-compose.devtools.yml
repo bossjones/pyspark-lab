@@ -1,0 +1,30 @@
+
+version: "3"
+
+# source: https://github.com/ksindi/kafka-pyspark-demo/blob/master/docker-compose.yml
+
+services:
+  zk-web:
+    image: tobilg/zookeeper-webui
+    network_mode: host
+    environment:
+      ZK_DEFAULT_NODE: ${HOST_IP}:32181/
+      HTTP_PORT: 2280
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    # source: https://github.com/moby/moby/issues/23910
+    # Docker should use the host network DNS server
+    extra_hosts:
+      - "moby:127.0.0.1"
+      - "default:127.0.0.1"
+      - "dockerhost:127.0.0.1"
+      - "latveria:127.0.0.1"
+    restart: always
+    healthcheck:
+      test: curl -s http://localhost:2280/ || exit 1
+      interval: 5s
+      timeout: 2s
+      retries: 3

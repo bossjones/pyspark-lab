@@ -9,7 +9,7 @@ YOUR_HOSTNAME := $(shell hostname | cut -d "." -f1 | awk '{print $1}')
 export HOST_IP=$(shell curl ipv4.icanhazip.com 2>/dev/null)
 
 username := bossjones
-container_name := boss-pyspark-pi
+container_name := boss-spark
 
 GIT_BRANCH  = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_SHA     = $(shell git rev-parse HEAD)

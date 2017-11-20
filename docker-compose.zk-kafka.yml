@@ -1,0 +1,203 @@
+
+version: "3"
+
+# source: https://github.com/ksindi/kafka-pyspark-demo/blob/master/docker-compose.yml
+
+services:
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    network_mode: host
+    ports:
+      - "32181:32181"
+      - "39999:39999"
+    expose:
+      - "32181"
+      - "39999"
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 32181
+      ZOOKEEPER_TICK_TIME: 2000
+      # KAFKA_JMX_PORT: 39999
+      # KAFKA_JMX_HOSTNAME: 159.203.110.77
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+      # ZK_CONFIG: tickTime=2000,initLimit=10,syncLimit=5,maxClientCnxns=128,forceSync=no,clientPort=2181
+      # ZK_ID: 1
+      # KAFKA_JMX_OPTS
+      # JMXPORT: 39999
+      DOCKERHOST: ${DOCKERHOST}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    # source: https://github.com/moby/moby/issues/23910
+    # Docker should use the host network DNS server
+    extra_hosts:
+      - "moby:127.0.0.1"
+      - "default:127.0.0.1"
+      - "dockerhost:127.0.0.1"
+      - "latveria:127.0.0.1"
+    restart: always
+    healthcheck:
+      test: echo srvr | nc localhost 32181 | grep Mode || exit 1
+      interval: 5s
+      timeout: 2s
+      retries: 3
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    network_mode: host
+    ports:
+      - "29092:29092"
+      - "49999:49999"
+    expose:
+      - "29092"
+      - "49999"
+    depends_on:
+      - zookeeper
+    # links:
+    #   - zookeeper
+    # ****************************************************************
+    # source: https://github.com/MohammadMazraeh/vgad/blob/a76c3ff3552529ecd21c3ec8b60ef1d4cfab4ee8/Openshift-Based/logstash/logstash.yml
+    # environment:
+    #   KAFKA_BROKER_ID: 1
+    #   KAFKA_ZOOKEEPER_CONNECT: 172.16.159.102:2181
+    #   KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://172.16.159.102:9092
+    #   KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    #   KAFKA_BROCKER_RACK: r1
+    #   KAFKA_NUM_PARTITIONS: 15
+    #   KAFKA_DEFAULT_REPLICATION_FACTOR: 2
+    #   KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE: "true"
+    #   JMX_PORT: 8000
+    # ****************************************************************
+    environment:
+      KAFKA_BROKER_ID: 101
+      KAFKA_ZOOKEEPER_CONNECT: localhost:32181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:29092
+      # JMX_PORT: 49999
+      # KAFKA_JMX_PORT: 49999
+      # **************************************************
+      # https://gist.github.com/samklr/75688745ce97ee969bf7f4485a1d0f5c
+      # KAFKA_JMX_HOSTNAME: kafka
+      # KAFKA_JMX_PORT: 49999
+      # KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      # CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:9092
+      # CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      # CONFLUENT_METRICS_REPORTER_PUBLISH_MS: 1000
+      # CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      # **************************************************
+      # KAFKA_MESSAGE_MAX_BYTES: 100000000
+      # KAFKA_REPLICA_FETCH_MAX_BYTES: 104857600
+      # KAFKA_ADVERTISED_PORT:
+      # KAFKA_JMX_PORT: 49999
+      # KAFKA_JMX_HOSTNAME: 159.203.110.77
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    #   KAFKA_BROKER_ID: 1
+    #   KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181/fullconfig
+    #   KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://full-config:9092
+    #   KAFKA_LOG4J_LOGGERS: kafka.controller=WARN,kafka.foo.bar=DEBUG
+    #   KAFKA_LOG4J_ROOT_LOGLEVEL: WARN
+    #   KAFKA_TOOLS_LOG4J_LOGLEVEL: ERROR
+      DOCKERHOST: ${DOCKERHOST}
+      # KAFKA_JMX_OPTS: "-Xms200m -Xmx512m -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=localhost -Djava.net.preferIPv4Stack=true -Dcom.sun.management.jmxremote.port=49999 -Dcom.sun.management.jmxremote.rmi.port=49999"
+    # labels:
+    # - io.confluent.docker.testing=true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    # source: https://github.com/moby/moby/issues/23910
+    # Docker should use the host network DNS server
+    extra_hosts:
+      - "moby:127.0.0.1"
+      - "default:127.0.0.1"
+      - "dockerhost:127.0.0.1"
+      - "latveria:127.0.0.1"
+    healthcheck:
+      test: /usr/bin/kafka-run-class kafka.admin.BrokerApiVersionsCommand --bootstrap-server localhost:29092 | grep 101 || exit 1
+      interval: 5s
+      timeout: 2s
+      retries: 3
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+# spark:
+#   image: jupyter/pyspark-notebook
+#   network_mode: host
+#   links:
+#    - kafka
+#   ports:
+#     - "18888:8888"
+
+# source: https://github.com/sheepkiller/kafka-manager-docker/blob/master/docker-compose.yml
+# zookeeper:
+#   image: confluent/zookeeper
+#   ports:
+#     - "2181:2181"
+#
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "50m"
+#        max-file: "10"
+
+# kafka:
+#   image: wurstmeister/kafka:0.9.0.0-1
+#   ports:
+#     - "9092:9092"
+#   links:
+#     - zookeeper:zk
+#   environment:
+#     - KAFKA_ADVERTISED_HOST_NAME
+#     - KAFKA_ADVERTISED_PORT=9092
+#     - KAFKA_DELETE_TOPIC_ENABLE=true
+#     - KAFKA_LOG_RETENTION_HOURS=1
+#     - KAFKA_MESSAGE_MAX_BYTES=10000000
+#     - KAFKA_REPLICA_FETCH_MAX_BYTES=10000000
+#     - KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS=60000
+#     - KAFKA_NUM_PARTITIONS=2
+#     - KAFKA_DELETE_RETENTION_MS=1000
+    # logging:
+    #   driver: "json-file"
+    #   options:
+    #     max-size: "50m"
+    #     max-file: "10"
+
+  kafka-manager:
+    image: sheepkiller/kafka-manager:latest
+    network_mode: host
+    ports:
+      - "9000:9000"
+    expose:
+      - "9000"
+    # links:
+    #   - zookeeper
+    #   - kafka
+    environment:
+      ZK_HOSTS: localhost:32181
+      APPLICATION_SECRET: letmein
+      KM_ARGS: -Djava.net.preferIPv4Stack=true
+      DOCKERHOST: ${DOCKERHOST}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    # source: https://github.com/moby/moby/issues/23910
+    # Docker should use the host network DNS server
+    extra_hosts:
+      - "moby:127.0.0.1"
+      - "default:127.0.0.1"
+      - "dockerhost:127.0.0.1"
+      - "latveria:127.0.0.1"
+    restart: always
+    healthcheck:
+      test: curl -s http://localhost:9000/ || exit 1
+      interval: 5s
+      timeout: 2s
+      retries: 3

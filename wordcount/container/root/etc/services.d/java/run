@@ -1,0 +1,45 @@
+#!/usr/bin/with-contenv sh
+
+SPARK_OPTS="--conf spark.executor.cores=${SPARK_EXECUTOR_CORES:-1} --conf spark.cores.max=${SPARK_CORES_MAX:-1}"
+
+if [ -n "$MESOS_PRINCIPAL" ]; then
+  SPARK_OPTS="$SPARK_OPTS --conf spark.mesos.principal=$MESOS_PRINCIPAL"
+fi
+
+if [ -n "$MESOS_SECRET" ]; then
+  SPARK_OPTS="$SPARK_OPTS --conf spark.mesos.secret=$MESOS_SECRET"
+fi
+
+if [ -n "$SPARK_MASTER" ]; then
+  SPARK_OPTS="$SPARK_OPTS --master $SPARK_MASTER"
+fi
+
+if [ -n "$MESOS_URIS" ]; then
+  SPARK_OPTS="$SPARK_OPTS --conf spark.mesos.uris=$MESOS_URIS"
+fi
+
+if [ -n "$MESOS_EXECUTOR_IMAGE" ]; then
+  SPARK_OPTS="$SPARK_OPTS --conf spark.mesos.executor.docker.image=$MESOS_EXECUTOR_IMAGE --conf spark.mesos.executor.docker.forcePullImage=true"
+else
+  SPARK_OPTS="$SPARK_OPTS --conf spark.mesos.executor.docker.image=${MARATHON_APP_DOCKER_IMAGE} --conf spark.mesos.executor.docker.forcePullImage=true"
+fi
+
+# workaround to support bridge networking
+if [ -n "$UI_PORT" ]; then
+  SPARK_OPTS="$SPARK_OPTS --conf spark.ui.port=$UI_PORT"
+elif [ -n "$PORT0" ]; then
+  SPARK_OPTS="$SPARK_OPTS --conf spark.ui.port=$PORT0"
+fi
+
+# only useful if you need to expose the UI via the DC/OS UI. Otherwise, don't use this
+if [ -n "$DCOS_SERVICE_NAME" ]; then
+  export APPLICATION_WEB_PROXY_BASE="/service/${DCOS_SERVICE_NAME}"
+fi
+
+# TODO figure out why running as pi causes executor failures
+#exec s6-setuidgid pi /usr/local/spark/bin/spark-submit \
+# exec /usr/local/spark/bin/spark-submit \
+#   --name WordCount \
+#   --conf spark.app.name=BossWordCount \
+#   ${SPARK_OPTS} \
+#   local:/spark-streaming-1.0-SNAPSHOT.jar $KAFKA_BROKERS $TOPICS

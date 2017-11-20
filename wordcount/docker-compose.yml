@@ -1,0 +1,9 @@
+version: '2'
+services:
+  wordcount:
+    build:
+      context: .
+    # environment:
+    network_mode: host
+    extra_hosts:
+      - "moby:127.0.0.1"
