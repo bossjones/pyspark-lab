@@ -79,6 +79,10 @@ run-kafka-jmx:
 	-e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
 	bossjones/boss-kafka:latest
 
+force-rm:
+	docker rm kafka-jmx; \
+	docker rmi kafka-jmx
+
 # # The tests are written in Python. Make a virtualenv to handle the dependencies.
 # venv: requirements.txt
 # 	@if [ -z $$PYTHON3 ]; then\

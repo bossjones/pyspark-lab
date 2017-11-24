@@ -28,3 +28,32 @@ echo 2 >> example.log
 # the last example runs in background so clean up
 docker kill test-producer && docker rm test-producer
 ```
+
+
+
+# remote-jmx-with-docker
+
+https://ptmccarthy.github.io/2014/07/24/remote-jmx-with-docker/
+
+```
+An important Docker-related note about the Tomcat configuration above is that the -Djava.rmi.server.hostname must be set to the externally accessible IP address of the Tomcat server. You want to use the address of the Docker host, not the Docker-assigned internal IP address.
+```
+
+
+# troubleshooting host networking on zookeeper ( Should see something like this )
+
+```
+[2017-11-24 03:31:32,185] INFO Server environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib (org.apache.zookeeper.server.ZooKeeperServer)
+[2017-11-24 03:31:32,185] INFO Server environment:java.io.tmpdir=/tmp (org.apache.zookeeper.server.ZooKeeperServer)
+[2017-11-24 03:31:32,185] INFO Server environment:java.compiler=<NA> (org.apache.zookeeper.server.ZooKeeperServer)
+[2017-11-24 03:31:32,185] INFO Server environment:os.name=Linux (org.apache.zookeeper.server.ZooKeeperServer)
+[2017-11-24 03:31:32,185] INFO Server environment:os.arch=amd64 (org.apache.zookeeper.server.ZooKeeperServer)
+[2017-11-24 03:31:32,185] INFO Server environment:os.version=4.4.17-boot2docker (org.apache.zookeeper.server.ZooKeeperServer)
+[2017-11-24 03:31:32,185] INFO Server environment:user.name=root (org.apache.zookeeper.server.ZooKeeperServer)
+[2017-11-24 03:31:32,185] INFO Server environment:user.home=/root (org.apache.zookeeper.server.ZooKeeperServer)
+[2017-11-24 03:31:32,185] INFO Server environment:user.dir=/ (org.apache.zookeeper.server.ZooKeeperServer)
+[2017-11-24 03:31:32,195] INFO tickTime set to 2000 (org.apache.zookeeper.server.ZooKeeperServer)
+[2017-11-24 03:31:32,195] INFO minSessionTimeout set to -1 (org.apache.zookeeper.server.ZooKeeperServer)
+[2017-11-24 03:31:32,195] INFO maxSessionTimeout set to -1 (org.apache.zookeeper.server.ZooKeeperServer)
+[2017-11-24 03:31:32,206] INFO binding to port 0.0.0.0/0.0.0.0:32181 (org.apache.zookeeper.server.NIOServerCnxnFactory)
+```
