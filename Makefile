@@ -3,6 +3,8 @@ export HOST_IP=$(shell curl ipv4.icanhazip.com 2>/dev/null)
 
 export PATH := ./bin:$(PATH)
 
+EXISTING_VOLUMES := $(shell docker volume ls | awk '{print $2}' | xargs)
+
 kafka-create-topic-twitter:
 # create twitter Kafka topic if none exist
 	docker run \
@@ -191,5 +193,12 @@ wordlist-download:
 	\rm -rfv ~/dev/english-words && \
 	git clone https://github.com/dwyl/english-words.git ~/dev/english-words
 
-wordcount-bash:
-	docker run --rm -i -t bossjones/boss-pyspark-wordcount:latest bash
+wordcount-bash-up:
+	docker-compose -f docker-compose.wordcount.yml up -d wordcount
+
+wordcount-bash-down:
+	docker-compose -f docker-compose.wordcount.yml stop wordcount && \
+	docker-compose -f docker-compose.wordcount.yml rm -f wordcount
+
+docker-rm-volumes:
+	docker volume rm $(EXISTING_VOLUMES)

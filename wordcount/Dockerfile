@@ -153,6 +153,9 @@ COPY ./container/root /
 RUN conda update --all && \
     conda install jinja2 git conda-build anaconda-client && \
     # install and compile libkafka
+    # ldconfig gets around LD_LIBRARY_PATH issue:
+    # issue: https://github.com/confluentinc/confluent-kafka-python/issues/65
+    # https://unix.stackexchange.com/questions/354295/what-is-the-default-value-of-ld-library-path
     git clone https://github.com/edenhill/librdkafka /usr/local/src/librdkafka && \
     cd /usr/local/src/librdkafka && \
     git checkout v0.11.1 && \
