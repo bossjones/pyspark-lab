@@ -57,3 +57,13 @@ An important Docker-related note about the Tomcat configuration above is that th
 [2017-11-24 03:31:32,195] INFO maxSessionTimeout set to -1 (org.apache.zookeeper.server.ZooKeeperServer)
 [2017-11-24 03:31:32,206] INFO binding to port 0.0.0.0/0.0.0.0:32181 (org.apache.zookeeper.server.NIOServerCnxnFactory)
 ```
+
+
+# Monitoring (pyspark)
+
+- https://github.com/JasonMWhite/spark-datadog-relay
+- https://github.com/jvutukur/Data-Visualization
+- https://github.com/wangcunxin/wespark/blob/58805b88bb56c27d4116f5bf3e1efdd861798f1d/bblink/graphite/kafka_graphite_streaming.py
+- https://github.com/hopshadoop/hops-yarn-ML/blob/7e54f12bafeaae62fde40eb6a18ebcac4a6f5e9e/yarn_machine_learning.py
+- https://tlfvincent.github.io/2016/09/25/kafka-spark-pipeline-part-1/
+- https://github.com/divolte/divolte-spark
