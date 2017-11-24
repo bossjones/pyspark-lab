@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 JMXTRANS_HEAP_SIZE=${JMXTRANS_HEAP_SIZE:-"512"}
 JMXTRANS_LOG_LEVEL=${JMXTRANS_LOG_LEVEL:-"info"}

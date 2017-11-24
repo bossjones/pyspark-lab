@@ -67,36 +67,74 @@ push:
 
 push-force: build-force push
 
-run-jmxtrans:
+run-dm-jmxtrans-kafka-d:
+	docker run \
+	-it \
+	--rm \
+	-d \
+	--name=jmxtrans-kafka \
+	--net="host" \
+	-e JMX_HOST=$(HOST_IP) \
+	-e JMX_PORT="49999" \
+	-e STATSD_HOST=$(HOST_IP) \
+	-e STATSD_PORT="8125" \
+	bossjones/boss-jmxtrans:latest
+
+run-dm-jmxtrans-zk-d:
+	docker run \
+	-it \
+	--rm \
+	-d \
+	--name=jmxtrans-zk \
+	--net="host" \
+	-e JMX_HOST=$(HOST_IP) \
+	-e JMX_PORT="39999" \
+	-e STATSD_HOST=$(HOST_IP) \
+	-e STATSD_PORT="8125" \
+	bossjones/boss-jmxtrans:latest
+
+kill:
+	docker kill jmxtrans-zk
+	docker kill jmxtrans-kafka
+
+run-dm-jmxtrans-kafka:
 	docker run \
 	-it \
 	--rm \
 	--name=jmxtrans \
 	--net="host" \
-	-e JMX_HOST=$(HOST_IP) \
-	-e JMX_PORT="4000" \
-	-e STATSD_HOST="dashboard" \
+	-e JMX_HOST=$(shell docker-machine ip dev) \
+	-e JMX_PORT="49999" \
+	-e STATSD_HOST=$(shell docker-machine ip dev) \
 	-e STATSD_PORT="8125" \
 	bossjones/boss-jmxtrans:latest
 
-# run jmx though docker-machine
-# KAFKA_JMX_HOSTNAME=docker-machine ip
-# JMX connect to $KAFKA_JMX_HOSTNAME:39999
-run-dm-jmxtrans:
+# run-dm-jmxtrans-zk:
+# 	docker run \
+# 	-it \
+# 	--rm \
+# 	--name=jmxtrans \
+# 	--net="host" \
+# 	-e JMX_HOST=$(shell docker-machine ip dev) \
+# 	-e JMX_PORT="39999" \
+# 	-e STATSD_HOST=$(shell docker-machine ip dev) \
+# 	-e STATSD_PORT="8125" \
+# 	bossjones/boss-jmxtrans:latest
+
+run-dm-jmxtrans-zk:
 	docker run \
 	-it \
 	--rm \
-	--name=zk-jmx \
-	--net="host" \
-	-e ZOOKEEPER_SERVER_ID="1" \
-	-e ZOOKEEPER_TICK_TIME="2000" \
-	-e ZOOKEEPER_CLIENT_PORT="32181" \
-	-e KAFKA_JMX_PORT="39999" \
-	-e KAFKA_JMX_HOSTNAME=$(shell docker-machine ip dev) \
-	bossjones/boss-zookeeper:latest
+	--name=jmxtrans \
+	-e JMX_HOST=$(shell docker-machine ip dev) \
+	-e JMX_PORT="39999" \
+	-e STATSD_HOST=$(shell docker-machine ip dev) \
+	-e STATSD_PORT="8125" \
+	bossjones/boss-jmxtrans:latest
 
-run-zk-docker-machine-jmx: run-zk-dm-jmx
+
+# run-jmxtrans-docker-machine-jmx: run-jmxtrans-dm-jmx
 
 force-rm:
-	docker rm zk-jmx; \
-	docker rmi zk-jmx
+	docker rm jmxtrans-jmx; \
+	docker rmi jmxtrans-jmx
