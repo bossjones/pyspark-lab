@@ -171,6 +171,13 @@ zk-down:
 	docker-compose -f docker-compose.zk-kafka.yml stop zookeeper && \
 	docker-compose -f docker-compose.zk-kafka.yml rm -f zookeeper
 
+zk-web-up:
+	docker-compose -f docker-compose.devtools.yml up zk-web -d
+
+zk-web-down:
+	docker-compose -f docker-compose.devtools.yml stop zk-web && \
+	docker-compose -f docker-compose.devtools.yml rm -f zk-web
+
 kafka-up:
 	docker-compose -f docker-compose.zk-kafka.yml up -d kafka
 

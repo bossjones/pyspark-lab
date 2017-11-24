@@ -1,0 +1,129 @@
+---
+version: "3"
+
+# source: https://github.com/ksindi/kafka-pyspark-demo/blob/master/docker-compose.yml
+# bridge mode
+services:
+# jvmapp:
+#   build: .
+#   dockerfile: Dockerfile-jvmapp
+#   container_name: jvmapp
+#   environment:
+#     JMX_HOST: jvmapp
+#     JMX_PORT: 4000
+#   ports:
+#     - "4000:4000"
+  jmxtrans:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bossjones/boss-jmxtrans:latest
+    container_name: boss-jmxtrans
+    # build: .
+    # dockerfile: Dockerfile
+    # container_name: jmxtrans
+    environment:
+      JMX_HOST: "${HOST_IP}"
+      JMX_PORT: 49999
+      # STATSD_HOST: dashboard
+      STATSD_HOST: ${STATSD_IP}
+      STATSD_PORT: 8125
+    # links:
+    #   - jvmapp
+    #   - dashboard
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    restart: always
+    healthcheck:
+      test: curl -s http://localhost/ || exit 1
+      interval: 5s
+      timeout: 2s
+      retries: 15
+# dashboard:
+#   image: kamon/grafana_graphite
+#   container_name: dashboard
+#   ports:
+#     - "80:80"
+#     - "81:81"
+#     - "8125:8125/udp"
+#     - "8126:8126"
+
+
+
+# version: "3"
+
+# source: https://github.com/ksindi/kafka-pyspark-demo/blob/master/docker-compose.yml
+# bridge mode
+services:
+  grafana-graphite:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bossjones/boss-grafana-graphite:latest
+    # network_mode: "host"
+    container_name: boss-grafana-graphite
+    # source: https://github.com/hiniko/docker-monitoring/blob/master/docker-compose.yml
+    # environment:
+    #   - HOSTNAME=grafana-graphite
+    # privileged: true
+    ports:
+      # protocols (newline delimited, pickle)
+      # the Grafana web interface
+      - '80:80'
+      # the Graphite web port
+      - '81:81'
+      # the StatsD port.
+      - '8125:8125/udp'
+      # the StatsD administrative port.
+      - '8126:8126'
+      # carbon: newline
+      - '2003:2003'
+      # carbon: delimited
+      - '2004:2004'
+      # carbon: pickle
+      - '7002:7002'
+    expose:
+      # the Grafana web interface
+      - '80'
+      # the Graphite web port
+      - '81'
+      # the StatsD port.
+      - '8125'
+      # the StatsD administrative port.
+      - '8126'
+      # carbon: newline
+      - '2003'
+      # carbon: delimited
+      - '2004'
+      # carbon: pickle
+      - '7002'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    # source: https://github.com/moby/moby/issues/23910
+    # Docker should use the host network DNS server
+    # extra_hosts:
+    #   - "moby:127.0.0.1"
+    #   - "default:127.0.0.1"
+    #   - "dockerhost:127.0.0.1"
+    #   - "baxter:127.0.0.1"
+    restart: always
+    healthcheck:
+      test: curl -s http://localhost/ || exit 1
+      interval: 5s
+      timeout: 2s
+      retries: 15
+    volumes:
+      - ./data/whisper:/opt/graphite/storage/whisper
+      - ./data/grafana:/opt/grafana/data
+      - ./log/graphite:/opt/graphite/storage/log
+    # volumes:
+    #   - ./data/whisper:/opt/graphite/storage/whisper
+    #   - ./data/grafana:/opt/grafana/data
+    #   - ./log/graphite:/opt/graphite/storage/log
+    #   - ./log/supervisor:/var/log/supervisor
