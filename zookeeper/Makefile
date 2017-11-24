@@ -101,3 +101,17 @@ run-zk-docker-machine-jmx: run-zk-dm-jmx
 force-rm:
 	docker rm zk-jmx; \
 	docker rmi zk-jmx
+
+run-zk-jmx-d:
+	docker run \
+	-it \
+	-d \
+	--rm \
+	--name=zk-jmx \
+	--net="host" \
+	-e ZOOKEEPER_SERVER_ID="1" \
+	-e ZOOKEEPER_TICK_TIME="2000" \
+	-e ZOOKEEPER_CLIENT_PORT="32181" \
+	-e KAFKA_JMX_PORT="39999" \
+	-e KAFKA_JMX_HOSTNAME=$(HOST_IP) \
+	bossjones/boss-zookeeper:latest
