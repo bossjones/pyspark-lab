@@ -1,9 +1,21 @@
-FROM confluentinc/cp-zookeeper:3.3.1
+FROM openjdk:8
+
+# source: https://github.com/dvpe/MonitoringJVM/tree/5ca9003a8ba8ffe4446ac91fd9b7151e3089645c
 
 LABEL Maintainer="Malcolm Jones <bossjones@theblacktonystark.com>"
 
 ENV JVMTOP_VERSION=0.8.0 \
-    GOSS_VERSION=v0.3.4
+    GOSS_VERSION=v0.3.4 \
+    JMXTRANS_VERSION=268
+
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections \
+&& wget http://central.maven.org/maven2/org/jmxtrans/jmxtrans/${JMXTRANS_VERSION}/jmxtrans-${JMXTRANS_VERSION}.deb \
+&& dpkg -i jmxtrans-${JMXTRANS_VERSION}.deb
+
+COPY run-jmxtrans.sh /run-jmxtrans.sh
+RUN chmod 755 /run-jmxtrans.sh
+
+CMD /run-jmxtrans.sh
 
 # source: https://fabianlee.org/2017/02/20/monitoring-java-jmx-exploration-from-the-console-using-jmxterm/
 # > java -jar jmxterm-1.0-alpha-4-uber.jar

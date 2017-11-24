@@ -1,0 +1,30 @@
+---
+# jvmapp:
+#   build: .
+#   dockerfile: Dockerfile-jvmapp
+#   container_name: jvmapp
+#   environment:
+#     JMX_HOST: jvmapp
+#     JMX_PORT: 4000
+#   ports:
+#     - "4000:4000"
+jmxtrans:
+  build: .
+  dockerfile: Dockerfile-jmxtrans
+  container_name: jmxtrans
+  environment:
+    JMX_HOST: jvmapp
+    JMX_PORT: 4000
+    STATSD_HOST: dashboard
+    STATSD_PORT: 8125
+  links:
+    - jvmapp
+    - dashboard
+# dashboard:
+#   image: kamon/grafana_graphite
+#   container_name: dashboard
+#   ports:
+#     - "80:80"
+#     - "81:81"
+#     - "8125:8125/udp"
+#     - "8126:8126"
