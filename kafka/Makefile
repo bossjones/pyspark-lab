@@ -68,16 +68,63 @@ push:
 push-force: build-force push
 
 run-kafka-jmx:
-	docker run -d \
+	docker run \
+	--rm \
 	--name=kafka-jmx \
-	--net=host \
+	--net="host" \
 	-e KAFKA_BROKER_ID=1 \
 	-e KAFKA_ZOOKEEPER_CONNECT=localhost:32181/jmx \
 	-e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:39092 \
-	-e KAFKA_JMX_PORT=49999 \
+	-e KAFKA_JMX_PORT="49999" \
 	-e KAFKA_JMX_HOSTNAME=$(HOST_IP) \
 	-e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
 	bossjones/boss-kafka:latest
+
+run-kafka-jmx-d:
+	docker run -d \
+	--rm \
+	--name=kafka-jmx \
+	--net="host" \
+	-e KAFKA_BROKER_ID=1 \
+	-e KAFKA_ZOOKEEPER_CONNECT=localhost:32181/jmx \
+	-e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:39092 \
+	-e KAFKA_JMX_PORT="49999" \
+	-e KAFKA_JMX_HOSTNAME=$(HOST_IP) \
+	-e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+	bossjones/boss-kafka:latest
+
+run-kafka-dm-jmx-d:
+	docker run -d \
+	--rm \
+	--name=kafka-jmx \
+	--net="host" \
+	-e KAFKA_BROKER_ID=1 \
+	-e KAFKA_ZOOKEEPER_CONNECT=localhost:32181/jmx \
+	-e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:39092 \
+	-e KAFKA_JMX_PORT="49999" \
+	-e KAFKA_JMX_HOSTNAME=$(shell docker-machine ip dev) \
+	-e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+	bossjones/boss-kafka:latest
+
+run-kafka-dm-jmx:
+	docker run \
+	--rm \
+	--name=kafka-jmx \
+	--net="host" \
+	-e KAFKA_BROKER_ID=1 \
+	-e KAFKA_ZOOKEEPER_CONNECT=localhost:32181/jmx \
+	-e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:39092 \
+	-e KAFKA_JMX_PORT="49999" \
+	-e KAFKA_JMX_HOSTNAME=$(shell docker-machine ip dev) \
+	-e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+	bossjones/boss-kafka:latest
+
+run-kafka-jmx: run-kafka-jmx
+
+run-kafka-docker-machine-jmx-d: run-kafka-dm-jmx-d
+
+run-kafka-jmx-d: run-kafka-jmx-d
+
 
 force-rm:
 	docker rm kafka-jmx; \
