@@ -73,7 +73,6 @@ run-dm-jmxtrans-kafka-d:
 	--rm \
 	-d \
 	--name=jmxtrans-kafka \
-	--net="host" \
 	-e JMX_HOST=$(HOST_IP) \
 	-e JMX_PORT="49999" \
 	-e STATSD_HOST=$(HOST_IP) \
@@ -86,7 +85,6 @@ run-dm-jmxtrans-zk-d:
 	--rm \
 	-d \
 	--name=jmxtrans-zk \
-	--net="host" \
 	-e JMX_HOST=$(HOST_IP) \
 	-e JMX_PORT="39999" \
 	-e STATSD_HOST=$(HOST_IP) \
@@ -102,7 +100,6 @@ run-dm-jmxtrans-kafka:
 	-it \
 	--rm \
 	--name=jmxtrans \
-	--net="host" \
 	-e JMX_HOST=$(shell docker-machine ip dev) \
 	-e JMX_PORT="49999" \
 	-e STATSD_HOST=$(shell docker-machine ip dev) \
