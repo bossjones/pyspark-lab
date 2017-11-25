@@ -67,3 +67,6 @@ An important Docker-related note about the Tomcat configuration above is that th
 - https://github.com/hopshadoop/hops-yarn-ML/blob/7e54f12bafeaae62fde40eb6a18ebcac4a6f5e9e/yarn_machine_learning.py
 - https://tlfvincent.github.io/2016/09/25/kafka-spark-pipeline-part-1/
 - https://github.com/divolte/divolte-spark
+
+# jmxtrans other examples
+https://github.com/jmxtrans/jmxtrans/wiki/MoreExamples
