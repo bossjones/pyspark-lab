@@ -49,7 +49,7 @@ exec 2>&1
 # --verbose \
 # /app/app/kafka_wordcount.py localhost:2181 test-topic
 
-# FIXME: pg: org.apache.spark:spark-streaming-kafka-0-8:2.2.0
+# source: https://mvnrepository.com/artifact/org.apache.spark/spark-streaming-kafka-0-8-assembly_2.11/2.2.0
 ${SPARK_HOME}/bin/spark-submit \
 --name pyspark-lab-kafka-test \
 --jars /jars/spark-streaming-kafka-0-8-assembly_2.11-2.2.0.jar \
