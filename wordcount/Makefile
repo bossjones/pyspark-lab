@@ -70,6 +70,9 @@ push-force: build-force push
 bash:
 	docker run \
 	--name=boss-pyspark-wordcount-bash \
+	-e DOCKERHOST \
+	-e HOST_IP \
+	-e _YOUR_HOSTNAME \
 	--rm \
 	-it \
 	$(username)/$(container_name):latest \

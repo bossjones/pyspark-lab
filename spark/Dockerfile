@@ -54,12 +54,15 @@ ENV LANG=C.UTF-8 \
   HADOOP_HOME=/usr/local/hadoop \
   SCRATCH_DIR=/mnt/scratch
 
-ENV SPARK_DIST_URL=https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz \
-  HADOOP_DIST_URL=https://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
-  HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop \
-  PATH=$PATH:$HADOOP_HOME/bin \
-  SPARK_CONF_FILE=$SPARK_HOME/conf/spark-defaults.conf \
-  LD_LIBRARY_PATH=${HADOOP_HOME}/lib/native:${LD_LIBRARY_PATH}
+ENV SPARK_DIST_URL=https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-without-hadoop.tgz
+ENV HADOOP_DIST_URL=https://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz
+# root@d1fc767bbbe2:/usr/local/hadoop/share/hadoop/tools/lib#
+ENV HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+ENV HADOOP_LIB_PATH=${HADOOP_HOME}/lib
+ENV HADOOP_INCLUDE_PATH=${HADOOP_HOME}/include
+ENV PATH=$PATH:$HADOOP_HOME/bin
+ENV SPARK_CONF_FILE=$SPARK_HOME/conf/spark-defaults.conf
+ENV LD_LIBRARY_PATH=${HADOOP_HOME}/lib/native:${LD_LIBRARY_PATH}
 
 WORKDIR /
 

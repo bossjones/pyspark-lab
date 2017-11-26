@@ -197,7 +197,7 @@ RUN apt-get update && \
     apt-get install -yqq \
     python-qt4 \
     libxml2-dev libxslt-dev \
-    mesos
+    mesos netcat
 
 ###############################
 # Install PyData modules and IPython dependencies
@@ -245,9 +245,21 @@ RUN echo "#!/bin/bash" > $STARTSCRIPT \
 # \
 # && cp -a /scripts/pyspark_vars.sh /opt/conda/envs/python36/etc/conda/activate.d/pyspark_vars.sh
 
+# grab the appropriate jars from maven
+# RUN cd ${HADOOP_HOME}/share/hadoop/tools/lib && \
+#     curl --retry 3 -sSL -O http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-assembly_2.11/1.6.3/spark-streaming-kafka-assembly_2.11-1.6.3.jar
+
 # WORKDIR /data
+
+RUN mkdir /jars && \
+    cd /jars && \
+    curl --retry 3 -SL http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.39/mysql-connector-java-5.1.39.jar -o /jars/mysql-connector-java-5.1.39.jar && \
+    curl --retry 3 -sSL -O http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-assembly_2.11/1.6.3/spark-streaming-kafka-assembly_2.11-1.6.3.jar
 
 # # Move this into spark
 # ENV MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so
+
+# Overlay the root filesystem from this repo
+COPY . /app
 
 RUN ls -lta /tests && goss -g /tests/wordcount/ubuntu.goss.yaml validate
