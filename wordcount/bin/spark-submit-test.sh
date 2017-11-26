@@ -12,7 +12,7 @@ set -x
 # adding his answer to mine.
 exec 2>&1
 
-# bin/spark-submit --jars ${HADOOP_HOME}/share/hadoop/tools/lib/spark-streaming-kafka-assembly_2.11-1.6.3.jar
+# bin/spark-submit --jars ${HADOOP_HOME}/share/hadoop/tools/lib/spark-streaming-kafka-0-8_2.11-2.2.0.jar
 
 # source: https://github.com/kashirin-alex/environments-builder/blob/b2bb2adda787d7a34809061a175baf69406d2477/debian/build-debian-env.sh
 # 'apache-hadoop')
@@ -39,20 +39,19 @@ exec 2>&1
 # echo "export PATH=\$PATH:\"$CUST_JAVA_INST_PREFIX/$sn/bin\"" >> $ENV_SETTINGS_PATH/$sn.sh
 # 		shift;;
 
-
 # FIXME: Mesos version 11/26/2017
 # ${SPARK_HOME}/bin/spark-submit \
 # --name ${APP_NAME} \
 # --master ${MASTER_URI} \
 # --deploy-mode client \
-# --jars /jars/spark-streaming-kafka-assembly_2.11-1.6.3.jar \
+# --jars /jars/spark-streaming-kafka-0-8_2.11-2.2.0.jar \
 # --py-files /app/app/kafka_wordcount.py \
 # --verbose \
 # /app/app/kafka_wordcount.py localhost:2181 test-topic
 
-# FIXME: simple version
+# FIXME: pg: org.apache.spark:spark-streaming-kafka-0-8:2.2.0
 ${SPARK_HOME}/bin/spark-submit \
 --name pyspark-lab-kafka-test \
---jars /jars/spark-streaming-kafka-assembly_2.11-1.6.3.jar \
+--jars /jars/spark-streaming-kafka-0-8-assembly_2.11-2.2.0.jar \
 --verbose \
-/app/app/kafka_wordcount.py ${DOCKERHOST}:32181 test
+/app/app/kafka_wordcount.py ${HOST_IP}:32181 test

@@ -70,3 +70,10 @@ An important Docker-related note about the Tomcat configuration above is that th
 
 # jmxtrans other examples
 https://github.com/jmxtrans/jmxtrans/wiki/MoreExamples
+
+
+# FIX for: Spark Twitter Streaming exception : (org.apache.spark.Logging) classnotfound
+
+
+
+https://stackoverflow.com/questions/38893655/spark-twitter-streaming-exception-org-apache-spark-logging-classnotfound

@@ -254,7 +254,11 @@ RUN echo "#!/bin/bash" > $STARTSCRIPT \
 RUN mkdir /jars && \
     cd /jars && \
     curl --retry 3 -SL http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.39/mysql-connector-java-5.1.39.jar -o /jars/mysql-connector-java-5.1.39.jar && \
-    curl --retry 3 -sSL -O http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-assembly_2.11/1.6.3/spark-streaming-kafka-assembly_2.11-1.6.3.jar
+    curl --retry 3 -sSL -O http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-0-8-assembly_2.11/2.2.0/spark-streaming-kafka-0-8-assembly_2.11-2.2.0.jar
+
+# http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-0-8-assembly_2.11/2.2.0/spark-streaming-kafka-0-8-assembly_2.11-2.2.0.jar
+
+# http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-0-8_2.11/2.2.0/spark-streaming-kafka-0-8_2.11-2.2.0.jar
 
 # # Move this into spark
 # ENV MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so
