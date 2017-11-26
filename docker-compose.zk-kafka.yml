@@ -39,6 +39,8 @@ services:
       - "default:127.0.0.1"
       - "dockerhost:127.0.0.1"
       - "latveria:127.0.0.1"
+      - "local:127.0.0.1"
+      - "dev:127.0.0.1"
     restart: always
     healthcheck:
       test: echo srvr | nc localhost 32181 | grep Mode || exit 1
@@ -117,6 +119,8 @@ services:
       - "default:127.0.0.1"
       - "dockerhost:127.0.0.1"
       - "latveria:127.0.0.1"
+      - "local:127.0.0.1"
+      - "dev:127.0.0.1"
     healthcheck:
       test: /usr/bin/kafka-run-class kafka.admin.BrokerApiVersionsCommand --bootstrap-server localhost:29092 | grep 101 || exit 1
       interval: 5s
@@ -195,6 +199,8 @@ services:
       - "default:127.0.0.1"
       - "dockerhost:127.0.0.1"
       - "latveria:127.0.0.1"
+      - "local:127.0.0.1"
+      - "dev:127.0.0.1"
     restart: always
     healthcheck:
       test: curl -s http://localhost:9000/ || exit 1
