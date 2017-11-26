@@ -67,6 +67,19 @@ push:
 
 push-force: build-force push
 
+bash:
+	docker run \
+	--name=boss-pyspark-wordcount-bash \
+	--rm \
+	-it \
+	$(username)/$(container_name):latest \
+	bash
+
+exec:
+	docker exec \
+	-it \
+	boss-pyspark-wordcount-bash \
+	bash
 
 # # The tests are written in Python. Make a virtualenv to handle the dependencies.
 # venv: requirements.txt
