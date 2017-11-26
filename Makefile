@@ -209,3 +209,6 @@ wordcount-bash-down:
 
 docker-rm-volumes:
 	docker volume rm $(EXISTING_VOLUMES)
+
+icanhazip:
+	@curl ipv4.icanhazip.com
