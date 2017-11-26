@@ -55,3 +55,4 @@ ${SPARK_HOME}/bin/spark-submit \
 --jars /jars/spark-streaming-kafka-0-8-assembly_2.11-2.2.0.jar \
 --verbose \
 /app/app/kafka_wordcount.py ${HOST_IP}:32181 test
+

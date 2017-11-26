@@ -266,4 +266,6 @@ RUN mkdir /jars && \
 # Overlay the root filesystem from this repo
 COPY . /app
 
+RUN cp -a /app/conf/log4j.properties $SPARK_HOME/conf/log4j.properties
+
 RUN ls -lta /tests && goss -g /tests/wordcount/ubuntu.goss.yaml validate
