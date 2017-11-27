@@ -16,7 +16,9 @@ VERSION  = latest
 
 LOCAL_REPOSITORY = $(HOST_IP):5000
 
-BASE_DIR := $(shell basename $$pwd)
+CURRENT_DIR := $(shell pwd)
+
+BASE_DIR := $(shell basename "$(CURRENT_DIR)")
 
 TAG ?= $(VERSION)
 ifeq ($(TAG),@branch)
