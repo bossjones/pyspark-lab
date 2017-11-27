@@ -18,7 +18,7 @@ LOCAL_REPOSITORY = $(HOST_IP):5000
 
 CURRENT_DIR := $(shell pwd)
 
-BASE_DIR := $(shell basename "$(CURRENT_DIR)")
+BASE_DIR := $(shell dirname "$(CURRENT_DIR)")
 
 TAG ?= $(VERSION)
 ifeq ($(TAG),@branch)
