@@ -85,20 +85,27 @@ exec:
 	bash
 
 notebook:
-	docker run -it --rm -p 8888:8888 $(username)/$(container_name)
+	docker run -it \
+	--name=$(container_name) \
+	--rm \
+	-p 8888:8888 \
+	$(username)/$(container_name)
 
 notebook-no-pass:
-	docker run -d -p 8888:8888 \
+	docker run \
+	--name=$(container_name) \
+	-d -p 8888:8888 \
 	$(username)/$(container_name) \
 	start-notebook.sh \
 	--NotebookApp.token=''
 
 kill:
-	docker kill $(username)/$(container_name); \
-	docker rm $(username)/$(container_name)
+	docker kill $(container_name); \
+	docker rm $(container_name)
 
 ipython:
 	docker run -it \
+	--name=$(container_name) \
 	--rm \
 	$(username)/$(container_name) \
 	start.sh \
