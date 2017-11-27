@@ -24,3 +24,14 @@
 **pyspark.sql.SQLContext:** Main entry point for DataFrame and SQL functionality.
 
 **pyspark.sql.DataFrame:** A distributed collection of data grouped into named columns. Really a Dataset[Row], but called Dataframe to be consistent with the data frame concept in Pandas and R.
+
+**pyspark.SparkContext.parallelize(c, numSlices=None):** Distribute a local Python collection to form an RDD. Using xrange is recommended if the input represents a range for performance.
+
+**EG.**
+
+```
+>>> sc.parallelize([0, 2, 3, 4, 6], 5).glom().collect()
+[[0], [2], [3], [4], [6]]
+>>> sc.parallelize(xrange(0, 6, 2), 5).glom().collect()
+[[], [0], [], [2], [4]]
+```
