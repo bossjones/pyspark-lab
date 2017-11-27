@@ -11,6 +11,13 @@ from pyspark.sql import SQLContext
 from pyspark.sql.context import SQLContext
 from pyspark.sql.types import IntegerType, TimestampType
 
+# This module exports a set of functions corresponding to the intrinsic operators of Python.
+# For example, operator.add(x, y) is equivalent to the expression x+y.  The function names are those used for special methods; variants without leading and trailing '__' are also provided for convenience.
+
+from operator import add
+
+from pyspark.sql import SparkSession
+
 # source:
 # https://stackoverflow.com/questions/41144218/pyspark-creating-a-data-frame-from-text-file
 
@@ -20,32 +27,33 @@ from pyspark.sql.types import IntegerType, TimestampType
 # PATH = ""
 # COUNT = 0
 # WORDS = []
+DEFAULT_TXT = "/home/jovyan/work/wordcount/app/sample_data.txt"
 
 if __name__ == '__main__':
-    # if len(sys.argv) != 2:
-    #     # print("Usage: kafka_wordcount.py <ip> <port> <txt>", file=sys.stderr)
-    #     print("Usage: kafka_wordcount.py <txt>", file=sys.stderr)
-    #     exit(-1)
+    # print("Usage: spark_streaming_txt.py <ip> <port> <txt>", file=sys.stderr)
+    if len(sys.argv) != 2:
+        print("Usage: spark_streaming_txt.py <file>", file=sys.stderr)
+        exit(-1)
 
-    # -------------------------------------------------------------------------
-    # -------------------------------------------------------------------------
-    # -------------------------------------------------------------------------
-    # -------------------------------------------------------------------------
+    # ***********************[RDD EXAMPLE]*************************************
 
-    sc = SparkContext(appName="PythonStreamingKafkaWordCount")
-
+    sc = SparkContext(appName="PythonStreamingTxt")
     sc.setLogLevel("WARN")
-    # setup the same way you have it
-    # log_txt = sc.textFile("/usr/local/spark/sample_data.txt")
-    log_txt = sc.textFile("/home/jovyan/work/wordcount/app/sample_data.txt")
-    header = log_txt.first()
+
+    # raw_rdd = sc.textFile("/usr/local/spark/sample_data.txt")
+    # raw_rdd = sc.textFile(DEFAULT_TXT)
+
+    # NOTE: We point the context at a CSV file on disk.
+    # The result is a RDD, not the content of the file. This is a Spark transformation.
+    raw_rdd = sc.textFile("/home/jovyan/work/wordcount/app/sample_data.txt")
+    header = raw_rdd.first()
 
     # filter out the header, make sure the rest looks correct
-    log_txt = log_txt.filter(lambda line: line != header)
-    log_txt.take(10)
+    raw_rdd = raw_rdd.filter(lambda line: line != header)
+    raw_rdd.take(10)
     #   [u'0\\tdog\\t20160906182001\\tgoogle.com', u'1\\tcat\\t20151231120504\\tamazon.com']
 
-    temp_var = log_txt.map(lambda k: k.split("\\t"))
+    temp_var = raw_rdd.map(lambda k: k.split("\\t"))
 
     print(temp_var)
 
@@ -90,10 +98,7 @@ if __name__ == '__main__':
     # |        1 | null | amazon.com|
     # +---------+---------------+----------+
 
-    # -------------------------------------------------------------------------
-    # -------------------------------------------------------------------------
-    # -------------------------------------------------------------------------
-    # -------------------------------------------------------------------------
+    # ***********************[END - RDD EXAMPLE]*************************************
     # zkQuorum, topic = sys.argv[1:]
     # kvs = KafkaUtils.createStream(
     #     ssc, zkQuorum, "spark-streaming-consumer", {topic: 1})
@@ -107,3 +112,39 @@ if __name__ == '__main__':
 
     # ssc.start()
     # ssc.awaitTermination()
+
+    # ***********************[DATAFRAME EXAMPLE]*************************************
+
+    sc = SparkContext(appName="PythonStreamingTxt")
+    sc.setLogLevel("WARN")
+
+    # NOTE: The entry point to programming Spark with the Dataset and DataFrame API
+    # NOTE: A SparkSession can be used to create DataFrame, register DataFrame as tables, execute SQL over tables, cache tables, and read parquet files.
+    spark = SparkSession\
+        .builder\
+        .appName("PythonWordCountTxt")\
+        .getOrCreate()
+
+    lines = spark.read.text(
+        "/home/jovyan/work/wordcount/app/sample_data.txt").rdd.map(lambda r: r[0])
+    counts = lines.flatMap(lambda x: x.split(' ')) \
+                  .map(lambda x: (x, 1)) \
+                  .reduceByKey(add)
+    output = counts.collect()
+    for (word, count) in output:
+        print("%s: %i" % (word, count))
+
+    spark.stop()
+
+    # NOTE: We point the context at a CSV file on disk.
+    # The result is a RDD, not the content of the file. This is a Spark
+    # transformation.
+    # raw_rdd = sc.textFile("/home/jovyan/work/wordcount/app/sample_data.txt")
+    # header = raw_rdd.first()
+
+    # # filter out the header, make sure the rest looks correct
+    # raw_rdd = raw_rdd.filter(lambda line: line != header)
+    # raw_rdd.take(10)
+    # #   [u'0\\tdog\\t20160906182001\\tgoogle.com', u'1\\tcat\\t20151231120504\\tamazon.com']
+
+    # temp_var = raw_rdd.map(lambda k: k.split("\\t"))

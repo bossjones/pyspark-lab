@@ -227,7 +227,7 @@ RUN $CONDA_ACTIVATE && \
     conda install -y numpy pandas pip setuptools && \
     conda install -c conda-forge pyspark && \
     conda install -y py4j && \
-    pip install pdbpp gnureadline pydocstyle autopep8 pylint coverage flake8 confluent-kafka && \
+    pip install pdbpp gnureadline pydocstyle autopep8 pylint coverage flake8 confluent-kafka findspark && \
     git clone https://github.com/bossjones/boss-cheatsheets.git ~/.cheat
     # Note: this is how you use the conda pip instead of the existing one
 
