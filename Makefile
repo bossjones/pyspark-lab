@@ -154,7 +154,7 @@ kafka-create-consumer:
 	--from-beginning \
 	--max-messages 42
 
-dc-up: kafka-create-manager-cluster
+dc-up:
 	docker-compose -f docker-compose.zk-kafka.yml create && \
 	docker-compose -f docker-compose.zk-kafka.yml start
 
@@ -209,3 +209,6 @@ wordcount-bash-down:
 
 docker-rm-volumes:
 	docker volume rm $(EXISTING_VOLUMES)
+
+icanhazip:
+	@curl ipv4.icanhazip.com

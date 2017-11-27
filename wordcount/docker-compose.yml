@@ -3,7 +3,8 @@ services:
   wordcount:
     build:
       context: .
-    # environment:
+    environment:
+      DOCKERHOST: ${DOCKERHOST}
     network_mode: host
     extra_hosts:
       - "moby:127.0.0.1"

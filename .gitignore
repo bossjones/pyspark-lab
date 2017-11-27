@@ -322,3 +322,6 @@ ENV/
 metastore_db/
 
 # -----------------------------
+*/temp
+*temp
+temp

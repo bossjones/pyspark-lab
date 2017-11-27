@@ -3,6 +3,7 @@
     "${env.SPARK_HOME}/python",
     "${env.SPARK_HOME}/python/pyspark"
   ],
+  "python.pythonPath": "${env.HOME}/anaconda/envs/pyspark3/bin/python",
   "files.exclude": {
     "__pycache__/": "explorerExcludedFiles",
     "*.py[cod]": "explorerExcludedFiles",

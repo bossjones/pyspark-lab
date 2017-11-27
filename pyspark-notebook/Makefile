@@ -1,7 +1,5 @@
 SHELL := $(shell which bash)
 
-# export DOCKER_IP = $(shell which docker-machine > /dev/null 2>&1 && docker-machine ip $(DOCKER_MACHINE_NAME))
-
 export PATH := ./bin:./venv/bin:$(PATH)
 
 YOUR_HOSTNAME := $(shell hostname | cut -d "." -f1 | awk '{print $1}')
@@ -9,7 +7,7 @@ YOUR_HOSTNAME := $(shell hostname | cut -d "." -f1 | awk '{print $1}')
 export HOST_IP=$(shell curl ipv4.icanhazip.com 2>/dev/null)
 
 username := bossjones
-container_name := boss-pyspark-wordcount
+container_name := boss-pyspark-notebook
 
 GIT_BRANCH  = $(shell git rev-parse --abbrev-ref HEAD)
 GIT_SHA     = $(shell git rev-parse HEAD)
@@ -17,6 +15,10 @@ BUILD_DATE  = $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 VERSION  = latest
 
 LOCAL_REPOSITORY = $(HOST_IP):5000
+
+CURRENT_DIR := $(shell pwd)
+
+BASE_DIR := $(shell dirname "$(CURRENT_DIR)")
 
 TAG ?= $(VERSION)
 ifeq ($(TAG),@branch)
@@ -69,7 +71,8 @@ push-force: build-force push
 
 bash:
 	docker run \
-	--name=boss-pyspark-wordcount-bash \
+	-v $(BASE_DIR):/home/jovyan/work \
+	--name=$(container_name)-bash \
 	-e DOCKERHOST \
 	-e HOST_IP \
 	-e _YOUR_HOSTNAME \
@@ -81,22 +84,35 @@ bash:
 exec:
 	docker exec \
 	-it \
-	boss-pyspark-wordcount-bash \
+	$(container_name)-bash \
 	bash
 
-# # The tests are written in Python. Make a virtualenv to handle the dependencies.
-# venv: requirements.txt
-# 	@if [ -z $$PYTHON3 ]; then\
-# 	    PY3_MINOR_VER=`python3 --version 2>&1 | cut -d " " -f 2 | cut -d "." -f 2`;\
-# 	    if (( $$PY3_MINOR_VER < 5 )); then\
-# 		echo "Couldn't find python3 in \$PATH that is >=3.5";\
-# 		echo "Please install python3.5 or later or explicity define the python3 executable name with \$PYTHON3";\
-# 	        echo "Exiting here";\
-# 	        exit 1;\
-# 	    else\
-# 		export PYTHON3="python3.$$PY3_MINOR_VER";\
-# 	    fi;\
-# 	fi;\
-# 	test -d venv || virtualenv --python=$$PYTHON3 venv;\
-# 	pip install -r requirements.txt;\
-# 	touch venv;\
+notebook:
+	docker run -it \
+	-v $(BASE_DIR):/home/jovyan/work \
+	--name=$(container_name) \
+	--rm \
+	-p 8888:8888 \
+	$(username)/$(container_name)
+
+notebook-no-pass:
+	docker run \
+	-v $(BASE_DIR):/home/jovyan/work \
+	--name=$(container_name) \
+	-d -p 8888:8888 \
+	$(username)/$(container_name) \
+	start-notebook.sh \
+	--NotebookApp.token=''
+
+kill:
+	docker kill $(container_name); \
+	docker rm $(container_name)
+
+ipython:
+	docker run -it \
+	-v $(BASE_DIR):/home/jovyan/work \
+	--name=$(container_name) \
+	--rm \
+	$(username)/$(container_name) \
+	start.sh \
+	ipython

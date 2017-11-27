@@ -197,7 +197,7 @@ RUN apt-get update && \
     apt-get install -yqq \
     python-qt4 \
     libxml2-dev libxslt-dev \
-    mesos
+    mesos netcat
 
 ###############################
 # Install PyData modules and IPython dependencies
@@ -227,7 +227,7 @@ RUN $CONDA_ACTIVATE && \
     conda install -y numpy pandas pip setuptools && \
     conda install -c conda-forge pyspark && \
     conda install -y py4j && \
-    pip install pdbpp gnureadline pydocstyle autopep8 pylint coverage flake8 confluent-kafka && \
+    pip install pdbpp gnureadline pydocstyle autopep8 pylint coverage flake8 confluent-kafka findspark && \
     git clone https://github.com/bossjones/boss-cheatsheets.git ~/.cheat
     # Note: this is how you use the conda pip instead of the existing one
 
@@ -245,9 +245,27 @@ RUN echo "#!/bin/bash" > $STARTSCRIPT \
 # \
 # && cp -a /scripts/pyspark_vars.sh /opt/conda/envs/python36/etc/conda/activate.d/pyspark_vars.sh
 
+# grab the appropriate jars from maven
+# RUN cd ${HADOOP_HOME}/share/hadoop/tools/lib && \
+#     curl --retry 3 -sSL -O http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-assembly_2.11/1.6.3/spark-streaming-kafka-assembly_2.11-1.6.3.jar
+
 # WORKDIR /data
+
+RUN mkdir /jars && \
+    cd /jars && \
+    curl --retry 3 -SL http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.39/mysql-connector-java-5.1.39.jar -o /jars/mysql-connector-java-5.1.39.jar && \
+    curl --retry 3 -sSL -O http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-0-8-assembly_2.11/2.2.0/spark-streaming-kafka-0-8-assembly_2.11-2.2.0.jar
+
+# http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-0-8-assembly_2.11/2.2.0/spark-streaming-kafka-0-8-assembly_2.11-2.2.0.jar
+
+# http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-0-8_2.11/2.2.0/spark-streaming-kafka-0-8_2.11-2.2.0.jar
 
 # # Move this into spark
 # ENV MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so
+
+# Overlay the root filesystem from this repo
+COPY . /app
+
+RUN cp -a /app/conf/log4j.properties $SPARK_HOME/conf/log4j.properties
 
 RUN ls -lta /tests && goss -g /tests/wordcount/ubuntu.goss.yaml validate
