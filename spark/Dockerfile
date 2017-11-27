@@ -142,6 +142,8 @@ COPY ./container/root /
 # Move this into spark
 ENV MESOS_NATIVE_JAVA_LIBRARY=/usr/local/lib/libmesos.so
 
+COPY ./conf/log4j.properties $SPARK_HOME/conf/log4j.properties
+
 RUN goss -g /tests/spark/ubuntu.goss.yaml validate
 
 # needed by spark service

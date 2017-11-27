@@ -37,7 +37,7 @@ if __name__ == '__main__':
     sc.setLogLevel("WARN")
     # setup the same way you have it
     # log_txt = sc.textFile("/usr/local/spark/sample_data.txt")
-    log_txt = sc.textFile("/usr/local/spark/sample_data.txt")
+    log_txt = sc.textFile("/home/jovyan/work/wordcount/app/sample_data.txt")
     header = log_txt.first()
 
     # filter out the header, make sure the rest looks correct
