@@ -1,7 +1,5 @@
 SHELL := $(shell which bash)
 
-# export DOCKER_IP = $(shell which docker-machine > /dev/null 2>&1 && docker-machine ip $(DOCKER_MACHINE_NAME))
-
 export PATH := ./bin:./venv/bin:$(PATH)
 
 YOUR_HOSTNAME := $(shell hostname | cut -d "." -f1 | awk '{print $1}')
@@ -17,6 +15,8 @@ BUILD_DATE  = $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 VERSION  = latest
 
 LOCAL_REPOSITORY = $(HOST_IP):5000
+
+BASE_DIR := $(shell basename $$pwd)
 
 TAG ?= $(VERSION)
 ifeq ($(TAG),@branch)
@@ -69,6 +69,7 @@ push-force: build-force push
 
 bash:
 	docker run \
+	-v $(BASE_DIR):/home/jovyan/work \
 	--name=$(container_name)-bash \
 	-e DOCKERHOST \
 	-e HOST_IP \
@@ -86,6 +87,7 @@ exec:
 
 notebook:
 	docker run -it \
+	-v $(BASE_DIR):/home/jovyan/work \
 	--name=$(container_name) \
 	--rm \
 	-p 8888:8888 \
@@ -93,6 +95,7 @@ notebook:
 
 notebook-no-pass:
 	docker run \
+	-v $(BASE_DIR):/home/jovyan/work \
 	--name=$(container_name) \
 	-d -p 8888:8888 \
 	$(username)/$(container_name) \
@@ -105,6 +108,7 @@ kill:
 
 ipython:
 	docker run -it \
+	-v $(BASE_DIR):/home/jovyan/work \
 	--name=$(container_name) \
 	--rm \
 	$(username)/$(container_name) \
